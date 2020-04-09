@@ -3,7 +3,8 @@
       "module": "commonjs",
       "target": "es6",
       "noImplicitAny": false,
-      "moduleResolution": "node",
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
       "sourceMap": true,
       "outDir": "dist",
       "baseUrl": ".",
@@ -16,5 +17,9 @@
   },
   "include": [
       "src/**/*"
+  ],
+  "exclude": [
+      "node_modules/*",
+      "node_modules/sequelize/types/lib/model.d.ts"
   ]
 }

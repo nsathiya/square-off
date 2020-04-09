@@ -4,18 +4,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/bluebird": "^3.5.30",
+    "@types/validator": "^12.0.1",
     "apollo-server-express": "^1.1.0",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
     "express": "^4.15.4",
-    "graphql": "^0.10.5",
+    "nodemon": "^2.0.2",
     "path": "^0.12.7",
     "pg": "^7.1.2",
+    "reflect-metadata": "^0.1.13",
+    "sequelize-typescript": "^1.1.0",
     "uuid": "^3.1.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.42",
-    "@types/node": "^8.0.24",
+    "@types/node": "^13.11.1",
     "chai": "^4.1.1",
     "db-migrate": "^0.10.0-beta.23",
     "db-migrate-pg": "^0.2.5",
@@ -23,8 +27,10 @@
     "graphql-tools": "^1.2.1",
     "mocha": "^3.5.0",
     "prettier": "^1.5.3",
+    "sequelize": "^4.44.4",
+    "sequelize-cli": "^5.5.1",
     "ts-node": "^3.3.0",
-    "typescript": "^2.4.2"
+    "typescript": "^3.8.3"
   },
   "scripts": {
     "build": "rm -rf dist && tsc",

@@ -15,12 +15,47 @@ type UserInstance = Sequelize.Instance<UserAttributes> & UserAttributes;
 
 export function initUser(sequelize: Sequelize.Sequelize) {
   const attributes: SequelizeAttributes<UserAttributes> = {
-    id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4 },
-    first_name: { type: Sequelize.STRING, allowNull: false },
-    last_name: { type: Sequelize.STRING, allowNull: false },
-    email: { type: Sequelize.STRING, allowNull: false },
-    phone_number: { type: Sequelize.NUMBER, allowNull: false },
+    id: {
+      type: Sequelize.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.UUIDV4
+    },
+    first_name: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    last_name: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    phone_number: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
   };
   const User = sequelize.define<UserInstance, UserAttributes>("User", attributes);
+
+  User.createUser = async ({
+    firstName,
+    lastName,
+    email,
+    phoneNumber
+  }) => {
+    return User.create({
+       first_name: firstName,
+       last_name: lastName,
+       email: email,
+       phone_number: phoneNumber
+    });
+  }
+
+  User.getUserById = async (id) => {
+    return User.findByPk(id);
+  }
+
   return User;
 };

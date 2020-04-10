@@ -5,13 +5,27 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config.json')[env];
 
 
-const sequelize = new Sequelize(config.url, config);
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: config.host,
+    dialect: config.dialect
+  }
+);
 
-const db = {
+interface dbObject {
+  sequelize: any,
+  Sequelize: any,
+  User: any,
+}
+
+const db:any = {
   sequelize,
   Sequelize,
   User: initUser(sequelize),
-}
+};
 
 Object.values(db).forEach((model: any) => {
   if (model.associate) {
@@ -19,5 +33,4 @@ Object.values(db).forEach((model: any) => {
   }
 });
 
-export default db;
-// module.exports = db;
+module.exports = db;

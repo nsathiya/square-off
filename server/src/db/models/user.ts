@@ -39,6 +39,8 @@ export function initUser(sequelize: Sequelize.Sequelize) {
   };
   const User = sequelize.define<UserInstance, UserAttributes>("User", attributes);
 
+  // CRUD operations for this model
+
   User.createUser = async ({
     firstName,
     lastName,

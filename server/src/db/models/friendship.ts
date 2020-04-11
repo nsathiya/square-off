@@ -1,17 +1,16 @@
 import * as Sequelize from "sequelize";
-import { FriendshipStatus } from "../../lib/constants";
+import { FriendStatus } from "../../lib/constants";
 
 interface FriendshipAttributes {
   id?: string;
-  user_from: string;
-  user_to: string;
+  user: string;
+  friend: string;
   status: string;
   createdAt?: string;
   updatedAt?: string;
 }
 
 type FriendshipInstance = Sequelize.Instance<FriendshipAttributes> & FriendshipAttributes;
-// type UserModel = Sequelize.Model<UserInstance, UserAttributes>;
 
 export function initFriendship(sequelize: Sequelize.Sequelize) {
   const attributes: SequelizeAttributes<FriendshipAttributes> = {
@@ -20,47 +19,48 @@ export function initFriendship(sequelize: Sequelize.Sequelize) {
       primaryKey: true,
       defaultValue: Sequelize.UUIDV4
     },
-    user_from: {
+    user: {
       type: Sequelize.UUID,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
-    user_to: {
+    friend: {
       type: Sequelize.UUID,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
     status: {
-      type: Sequelize.ENUMS,
+      type: Sequelize.ENUM(Object.values(FriendStatus)),
       allowNull: false,
-      values: Object.values(FriendshipStatus),
+      defaultValue: FriendStatus.PENDING,
     },
   };
-  const Friendship = sequelize.define<FriendshipInstance, FriendshipAttributes>("Friendship", attributes);
+  const Friendship = sequelize.define<FriendshipInstance, FriendshipAttributes>("Friendships", attributes);
+
+  Friendship.associate = (models) => {
+    Friendship.belongsTo(models.User, { as: 'seeker', foreignKey: 'user' });
+    Friendship.belongsTo(models.User, { as: 'target', foreignKey: 'friend' });
+  }
 
   // CRUD operations for this model
 
   Friendship.createFriendship = async ({
-    userTo,
-    userFrom,
+    user,
+    friend,
     status,
   }) => {
-    return Friendship.create({
-       user_to: userTo,
-       user_from: userFrom,
-       status: status,
-    });
+    return Friendship.create({ user, friend, status });
   }
 
-  Friendship.getFriendshipById = (id) => {
-    return Friendship.findByPk(id);
-  }
-
-  Friendship.getFriendshipsByUser = (userId) => {
-    return Friendship.findAll({
-      where: {
-        OR: [user_to: userId, user_from: userId]
-      }
-    })
-  }
-
+  // Not needed currently
+  // Friendship.getFriendshipById = (id) => {
+  //   return Friendship.findByPk(id);
+  // }
   return Friendship;
 };

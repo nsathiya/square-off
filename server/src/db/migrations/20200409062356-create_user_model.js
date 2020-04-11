@@ -14,13 +14,16 @@ module.exports = {
         last_name: {
           type: Sequelize.DataTypes.STRING
         },
+        user_id: {
+          type: Sequelize.DataTypes.STRING,
+          allowNull: false,
+          unique: true
+        },
         email: {
-          type: Sequelize.STRING,
-          allowNull: false
+          type: Sequelize.DataTypes.STRING,
         },
         phone_number: {
-          type: Sequelize.STRING,
-          allowNull: false
+          type: Sequelize.DataTypes.STRING,
         },
         createdAt: {
           allowNull: false,

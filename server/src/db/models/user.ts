@@ -5,13 +5,13 @@ interface UserAttributes {
   first_name: string;
   last_name: string;
   email: string;
+  user_id: string;
   phone_number: number;
   createdAt?: string;
   updatedAt?: string;
 }
 
 type UserInstance = Sequelize.Instance<UserAttributes> & UserAttributes;
-// type UserModel = Sequelize.Model<UserInstance, UserAttributes>;
 
 export function initUser(sequelize: Sequelize.Sequelize) {
   const attributes: SequelizeAttributes<UserAttributes> = {
@@ -22,32 +22,37 @@ export function initUser(sequelize: Sequelize.Sequelize) {
     },
     first_name: {
       type: Sequelize.STRING,
-      allowNull: false
     },
     last_name: {
       type: Sequelize.STRING,
-      allowNull: false
+    },
+    user_id: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true
     },
     email: {
       type: Sequelize.STRING,
-      allowNull: false
     },
     phone_number: {
       type: Sequelize.STRING,
-      allowNull: false
     },
   };
   const User = sequelize.define<UserInstance, UserAttributes>("User", attributes);
-
+  User.associate = (models) => {
+    // User.belongsToMany(models.User, { through: models.Friendship, as: 'Friends' });
+  }
   // CRUD operations for this model
 
   User.createUser = async ({
+    userId,
     firstName,
     lastName,
     email,
     phoneNumber
   }) => {
     return User.create({
+       user_id: userId,
        first_name: firstName,
        last_name: lastName,
        email: email,

@@ -1,5 +1,6 @@
 import * as Sequelize from 'sequelize';
 import { initUser } from './user';
+import { initFriendship } from './friendship';
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config.json')[env];
@@ -19,12 +20,14 @@ interface dbObject {
   sequelize: any,
   Sequelize: any,
   User: any,
+  Friendship: any,
 }
 
 const db:any = {
   sequelize,
   Sequelize,
   User: initUser(sequelize),
+  Friendship: initFriendship(sequelize),
 };
 
 Object.values(db).forEach((model: any) => {

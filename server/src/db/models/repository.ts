@@ -1,6 +1,6 @@
 const { User, Friendship } = require("./index");
 
-function getAllFriendsForUser(id) {
+export function getAllFriendsForUser(id) {
     return Friendship.findAll({
       where: {
         $or: [
@@ -24,6 +24,6 @@ function getAllFriendsForUser(id) {
     });
 }
 
-module.exports = {
-  getAllFriendsForUser
-};
+// module.exports = {
+//   getAllFriendsForUser
+// };

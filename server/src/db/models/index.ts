@@ -3,7 +3,7 @@ import { initUser } from './user';
 import { initFriendship } from './friendship';
 
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config.json')[env];
+const config = require(__dirname + '/../config.js')[env];
 
 
 const sequelize = new Sequelize(

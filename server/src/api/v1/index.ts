@@ -11,18 +11,18 @@ const router = express.Router();
 const validator = createValidator();
 
 router.get(
-  '/user/:id',
+  '/users/:id',
   validator.query(getUserSchema.querySchema),
   controller.getUser
 );
-// router.get('/user', controller.getAllUsers);
-// router.get('/user/:id/friendship', controller.getUserFriendships)
+// router.get('/users', controller.getAllUsers);
+// router.get('/users/:id/friendships', controller.getUserFriendships)
 router.post(
-  '/user',
+  '/users',
   validator.query(createUserSchema.bodySchema),
   controller.createUser
 );
 
 module.exports = router;
 
-// router.post('/friendship', controller.createFriendship);
+// router.post('/friendships', controller.createFriendship);

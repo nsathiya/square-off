@@ -28,7 +28,6 @@ describe('Repository - #getAllFriendsForUser', () => {
     });
 
     const friends = await getAllFriendsForUser(userA.id);
-    console.log('friends', friends);
     expect(friends[0].target.user_id).to.equal(userC.user_id);
     expect(friends[1].target.user_id).to.equal(userB.user_id);
   });

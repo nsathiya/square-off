@@ -16,13 +16,13 @@ router.get(
   controller.getUser
 );
 // router.get('/users', controller.getAllUsers);
-// router.get('/users/:id/friendships', controller.getUserFriendships)
 router.post(
   '/users',
-  validator.query(createUserSchema.bodySchema),
+  validator.body(createUserSchema.bodySchema),
   controller.createUser
 );
 
 module.exports = router;
 
-// router.post('/friendships', controller.createFriendship);
+// router.get('/users/:id/friendships', controller.getUserFriendships)
+// router.post('users/:id/friendships', controller.createFriendship);

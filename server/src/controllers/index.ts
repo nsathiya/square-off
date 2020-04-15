@@ -1,5 +1,6 @@
 const repository = require('../db/models/repository');
 const db = require('../db/models');
+const { FriendStatus } = require('../lib/constants')
 
 module.exports.getUser = async (req, res, next) => {
   try {
@@ -45,6 +46,38 @@ module.exports.createUser = async (req, res, next) => {
     res.status(200).send({ message: user });
   } catch (e) {
     console.log('createUser request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.getUserFriendsList = async (req, res, next) => {
+  try {
+    const user = req.query.id;
+
+    const friendsList = await repository.getUsers.getAllFriendsForUser(user);
+
+    res.status(200).send({ message: friendsList });
+  } catch (e) {
+    console.log('getUserFriendsList request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.createPendingFriendship = async (req, res, next) => {
+  try {
+
+    const user = req.params.id;
+    const friend = req.body.friendId;
+
+    const friendship = await db.Friendship.createFriendship({
+      user,
+      friend,
+      status: FriendStatus.PENDING,
+    });
+
+    res.status(200).send({ message: friendship });
+  } catch (e) {
+    console.log('createPendingFriendship request error: ', e);
     res.status(500).send({ error: e.message });
   }
 };

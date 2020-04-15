@@ -1,6 +1,6 @@
 const { User, Friendship } = require("./index");
 const { FriendStatus } = require('../../lib/constants');
-import { getAllFriendsForUser } from './repository';
+import { getUserFriendsList } from './repository';
 import { expect } from 'chai';
 import 'mocha';
 
@@ -10,7 +10,7 @@ describe('Repository -', () => {
     await User.truncate({ cascade: true });
   });
 
-  describe('#getAllFriendsForUser', () => {
+  describe('#getUserFriendsList', () => {
     it('get all friends for user (w/ friendships saved as user)', async () => {
       const userA = await User.createUser({ userId: 'userA' });
       const userB = await User.createUser({ userId: 'userB' });
@@ -28,9 +28,9 @@ describe('Repository -', () => {
         status: FriendStatus.ACTIVE
       });
 
-      const friends = await getAllFriendsForUser(userA.id);
-      expect(friends[0].target.user_id).to.equal(userC.user_id);
-      expect(friends[1].target.user_id).to.equal(userB.user_id);
+      const friends = await getUserFriendsList(userA.id);
+      expect(friends[0].user.user_id).to.equal(userC.user_id);
+      expect(friends[1].user.user_id).to.equal(userB.user_id);
     });
 
     it('get all friends for user (w/ friendships saved as friend)', async () => {
@@ -50,10 +50,9 @@ describe('Repository -', () => {
         status: FriendStatus.ACTIVE
       });
 
-      const friends = await getAllFriendsForUser(userC.id);
+      const friends = await getUserFriendsList(userC.id);
 
-      expect(friends[0].seeker.user_id).to.equal(userA.user_id);
-      expect(friends[0].target.user_id).to.equal(userC.user_id);
+      expect(friends[0].user.user_id).to.equal(userA.user_id);
     });
   });
 

@@ -1,7 +1,7 @@
 const { User, Friendship } = require("./index");
 
-export function getAllFriendsForUser(id) {
-    return Friendship.findAll({
+export function getUserFriendsList(id) {
+    const friendships = Friendship.findAll({
       where: {
         $or: [
           { user: id },
@@ -22,8 +22,9 @@ export function getAllFriendsForUser(id) {
       raw: true,
       nest: true,
     });
-}
-
-// module.exports = {
-//   getAllFriendsForUser
-// };
+    return friendships.map(friendship => ({
+        status: friendship.status,
+        user: friendship.seeker.id !== id ? friendship.seeker : friendship.target
+      })
+    );
+};

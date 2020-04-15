@@ -64,5 +64,13 @@ export function initUser(sequelize: Sequelize.Sequelize) {
     return User.findByPk(id);
   }
 
+  User.getAllUsers = async (id) => {
+    return User.findAll({
+      where: {},
+      order: [['createdAt', 'DESC']],
+    }
+    );
+  }
+
   return User;
 };

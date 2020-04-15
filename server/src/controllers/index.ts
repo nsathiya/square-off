@@ -14,6 +14,18 @@ module.exports.getUser = async (req, res, next) => {
   }
 };
 
+module.exports.getAllUsers = async (req, res, next) => {
+  try {
+
+    const users = await db.User.getAllUsers();
+
+    res.status(200).send({ message: users });
+  } catch (e) {
+    console.log('getAllUsers request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
 module.exports.createUser = async (req, res, next) => {
   try {
     const userId = req.body.user_id;

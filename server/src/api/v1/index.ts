@@ -15,7 +15,10 @@ router.get(
   validator.query(getUserSchema.querySchema),
   controller.getUser
 );
-// router.get('/users', controller.getAllUsers);
+router.get(
+  '/users',
+  controller.getAllUsers
+);
 router.post(
   '/users',
   validator.body(createUserSchema.bodySchema),

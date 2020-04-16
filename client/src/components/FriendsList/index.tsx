@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
+    background: '#FFFFFF',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -76,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: '#674EFF'
   },
   drawerPaper: {
     position: 'relative',
@@ -143,14 +145,14 @@ export default function Dashboard() {
             onClick={handleDrawerOpen}
             className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
-            <MenuIcon />
+            <MenuIcon style={{ color: '#674EFF' }} />
           </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap={true} className={classes.title}>
-            Square Off
+          <Typography component="h1" variant="h6" noWrap={true} className={classes.title}>
+            SQUARE OFF
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
+              <NotificationsIcon style={{ color: '#674EFF' }} />
             </Badge>
           </IconButton>
         </Toolbar>

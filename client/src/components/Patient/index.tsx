@@ -36,6 +36,6 @@ class Patient extends React.Component<Props> {
       </tr>
     );
   }
-};
+}
 
 export default Patient;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ComponentClass } from 'react';
 import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router';
+// import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -27,4 +27,4 @@ const Header = () =>
     </span>
   </Wrapper>;
 
-export default withRouter(Header);
+export default Header; // withRouter(Header);

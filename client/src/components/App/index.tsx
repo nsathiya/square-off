@@ -3,15 +3,14 @@ import { PureComponent } from 'react';
 import Header from '../Header';
 import PatientList from '../PatientList';
 import CreatePatient from '../CreatePatient';
+import FriendsList from '../FriendsList';
 import { Switch, Route } from 'react-router-dom';
 
 const App = () =>
   <div>
-    <Header />
     <div>
       <Switch>
-        <Route exact={true} path="/" component={PatientList} />
-        <Route exact={true} path="/create" component={CreatePatient} />
+        <Route exact={true} path="/friends-list" component={FriendsList} />
       </Switch>
     </div>
   </div>;

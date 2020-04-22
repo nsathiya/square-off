@@ -18,7 +18,7 @@
     "eofline": false,
     "forin": true,
     "indent": [ true, "spaces" ],
-    "interface-name": [true, "never-prefix"],
+    "interface-name": [false, "never-prefix"],
     "jsdoc-format": true,
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
@@ -34,7 +34,7 @@
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [
-      true,
+      false,
       "log",
       "error",
       "debug",

@@ -1,9 +1,9 @@
 import * as React from 'react';
+// TODO
 import { PureComponent } from 'react';
-import Header from '../Header';
-import PatientList from '../PatientList';
-import CreatePatient from '../CreatePatient';
 import FriendsList from '../FriendsList';
+import SignUp from '../SignUp';
+import LogIn from '../LogIn';
 import { Switch, Route } from 'react-router-dom';
 
 const App = () =>
@@ -11,6 +11,8 @@ const App = () =>
     <div>
       <Switch>
         <Route exact={true} path="/friends-list" component={FriendsList} />
+        <Route exact={true} path="/sign-up" component={SignUp} />
+        <Route exact={true} path="/log-in" component={LogIn} />
       </Switch>
     </div>
   </div>;

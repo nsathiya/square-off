@@ -6,23 +6,20 @@ import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import SearchBar from 'material-ui-search-bar';
 // import { mainListItems, secondaryListItems } from './listItems';
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
+
+import AddFriend from './AddFriends';
+import FriendsList from './FriendsList';
 
 function Copyright() {
   return (
@@ -131,7 +128,6 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
     <div className={classes.root}>
@@ -185,27 +181,11 @@ export default function Dashboard() {
           <Grid container={true} spacing={3}>
             {/* Chart */}
             <Grid item={true} xs={12} md={6}>
-              <Paper className={fixedHeightPaper}>
-                <Typography variant="h5" gutterBottom={true}>
-                  My Friends
-                </Typography>
-                <Typography variant="body1" gutterBottom={true}>
-                  Aww, you have no friends. Add friends or invite them to Square Off!
-                </Typography>
-              </Paper>
+              <FriendsList />
             </Grid>
             {/* Recent Deposits */}
             <Grid item={true} xs={12} md={6}>
-              <Paper className={fixedHeightPaper}>
-                <Typography variant="h5" gutterBottom={true}>
-                  Add Friends
-                </Typography>
-                <SearchBar
-                  value={'Jake'}
-                  onChange={function (searchKey: string) { this.setState({ findFriend: searchKey }); }}
-                  onRequestSearch={function () { const test = 'test'; }}
-                />
-              </Paper>
+              <AddFriend />
             </Grid>
           </Grid>
           <Box pt={4}>

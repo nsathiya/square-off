@@ -2,26 +2,20 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
-import {
-  ApolloProvider,
-  createNetworkInterface,
-  ApolloClient
-} from 'react-apollo';
 import { BrowserRouter } from 'react-router-dom';
 
-const networkInterface = createNetworkInterface({
-  uri: 'http://localhost:9000/graphql'
-});
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { rootReducer } from './infra/store';
+import thunk from 'redux-thunk';
 
-const client = new ApolloClient({
-          networkInterface
-});
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <BrowserRouter>
-    <ApolloProvider client={client}>
+    <Provider store={store}>
       <App />
-    </ApolloProvider>
+    </Provider>
   </BrowserRouter>,
   document.getElementById('root')
 );

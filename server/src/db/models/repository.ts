@@ -1,4 +1,4 @@
-const { User, Friendship } = require("./index");
+const { User, Friendship } = require('./index');
 
 export function getUserFriendsList(id) {
     const friendships = Friendship.findAll({
@@ -27,4 +27,4 @@ export function getUserFriendsList(id) {
         user: friendship.seeker.id !== id ? friendship.seeker : friendship.target
       })
     );
-};
+}

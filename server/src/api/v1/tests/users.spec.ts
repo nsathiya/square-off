@@ -24,24 +24,24 @@ describe('Users routes', () => {
           .send({
             first_name: 'john',
             last_name: 'doe',
-            user_id: 'johntest',
+            username: 'johntest',
             email: 'john@test.com',
             phone_number: '2342344567'
           });
 
       expect(response.statusCode).to.equal(200);
-      expect(response.body.message.user_id).to.equal('johntest');
+      expect(response.body.message.username).to.equal('johntest');
       expect(response.body.message.first_name).to.equal('john');
       expect(response.body.message.last_name).to.equal('doe');
       expect(response.body.message.phone_number).to.equal('2342344567');
 
       const users = await User.findAll({});
-      expect(users[0].user_id).to.equal('johntest');
+      expect(users[0].username).to.equal('johntest');
       // TODO remove id from response.
       expect(users[0].id).to.equal(response.body.message.id);
     });
 
-    it('with no user_id should respond with 400', async () => {
+    it('with no username should respond with 400', async () => {
       const response: any = await chai.request(app)
           .post(`/api/v1/users`)
           .set('content-type', 'application/json')
@@ -53,18 +53,18 @@ describe('Users routes', () => {
           });
 
       expect(response.statusCode).to.equal(400);
-      expect(response.text).to.equal('Error validating request body. "user_id" is required.')
+      expect(response.text).to.equal('Error validating request body. "username" is required.');
 
       const users = await User.findAll({});
       expect(users.length).to.equal(0);
     });
 
-    it('with only user_id should respond with 200', async () => {
+    it('with only username should respond with 200', async () => {
       const response: any = await chai.request(app)
           .post(`/api/v1/users`)
           .set('content-type', 'application/json')
           .send({
-            user_id: 'johnd',
+            username: 'johnd',
           });
 
       expect(response.statusCode).to.equal(200);
@@ -79,14 +79,14 @@ describe('Users routes', () => {
       const user1 = await User.create({
         first_name: 'john',
         last_name: 'doe',
-        user_id: 'johnd',
+        username: 'johnd',
         email: 'john@test.com',
         phone_number: '2342344567'
       });
       const user2 = await User.create({
         first_name: 'jake',
         last_name: 'lee',
-        user_id: 'jakel',
+        username: 'jakel',
         email: 'jakel@test.com',
         phone_number: '2342344567'
       });
@@ -101,14 +101,14 @@ describe('Users routes', () => {
       expect(user2Response).excluding(excludedFields).to.deep.equal({
         first_name: 'jake',
         last_name: 'lee',
-        user_id: 'jakel',
+        username: 'jakel',
         email: 'jakel@test.com',
         phone_number: '2342344567'
       });
       expect(user1Response).excluding(excludedFields).to.deep.equal({
         first_name: 'john',
         last_name: 'doe',
-        user_id: 'johnd',
+        username: 'johnd',
         email: 'john@test.com',
         phone_number: '2342344567'
       });
@@ -127,14 +127,14 @@ describe('Users routes', () => {
 
   describe('get user\'s friendsList', () => {
     it('with correct input should respond with 200', async () => {
-      const userA = await User.createUser({ userId: 'userA' });
-      const userB = await User.createUser({ userId: 'userB' });
+      const userA = await User.createUser({ username: 'userA' });
+      const userB = await User.createUser({ username: 'userB' });
       await Friendship.createFriendship({
         user: userA.id,
         friend: userB.id,
         status: FriendStatus.PENDING
       });
-      const userC = await User.createUser({ userId: 'userC' });
+      const userC = await User.createUser({ username: 'userC' });
       await Friendship.createFriendship({
         user: userA.id,
         friend: userC.id,

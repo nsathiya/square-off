@@ -1,11 +1,11 @@
-import * as Sequelize from "sequelize";
+import * as Sequelize from 'sequelize';
 
 interface UserAttributes {
   id?: string;
   first_name: string;
   last_name: string;
   email: string;
-  user_id: string;
+  username: string;
   phone_number: number;
   createdAt?: string;
   updatedAt?: string;
@@ -26,7 +26,7 @@ export function initUser(sequelize: Sequelize.Sequelize) {
     last_name: {
       type: Sequelize.STRING,
     },
-    user_id: {
+    username: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true
@@ -38,39 +38,47 @@ export function initUser(sequelize: Sequelize.Sequelize) {
       type: Sequelize.STRING,
     },
   };
-  const User = sequelize.define<UserInstance, UserAttributes>("User", attributes);
+  const User = sequelize.define<UserInstance, UserAttributes>('User', attributes);
   User.associate = (models) => {
     // User.belongsToMany(models.User, { through: models.Friendship, as: 'Friends' });
-  }
+  };
   // CRUD operations for this model
 
   User.createUser = async ({
-    userId,
+    username,
     firstName,
     lastName,
     email,
     phoneNumber
+  }: {
+    username: string,
+    firstName?: string,
+    lastName?: string,
+    email?: string,
+    phoneNumber?: string
   }) => {
     return User.create({
-       user_id: userId,
+       username: username,
        first_name: firstName,
        last_name: lastName,
        email: email,
        phone_number: phoneNumber
     });
-  }
+  };
 
-  User.getUserById = async (id) => {
+  User.getUserById = async (id: string): Promise<any> => {
     return User.findByPk(id);
-  }
+  };
 
-  User.getAllUsers = async (id) => {
+  User.getUserByUsername = async (username: string): Promise<any> => {
+    return User.findOne({ where: { username } });
+  };
+
+  User.getAllUsers = async (): Promise<any> => {
     return User.findAll({
-      where: {},
       order: [['createdAt', 'DESC']],
-    }
-    );
-  }
+    });
+  };
 
   return User;
-};
+}

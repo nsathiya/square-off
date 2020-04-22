@@ -3,4 +3,5 @@ module.exports = {
   createUserSchema: require('./createUserSchema'),
   createPendingFriendshipSchema: require('./createPendingFriendshipSchema'),
   getUserFriendsListSchema: require('./getUserFriendsListSchema'),
-}
+  logInSchema: require('./logInSchema'),
+};

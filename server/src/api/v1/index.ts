@@ -3,6 +3,7 @@ const express = require('express');
 const controller = require('../../controllers');
 const { createValidator } = require('express-joi-validation');
 const {
+  logInSchema,
   getUserSchema,
   getUserFriendsListSchema,
   createUserSchema,
@@ -13,6 +14,12 @@ const router = express.Router();
 const validator = createValidator();
 
 // TODO openApi documentation
+router.post(
+  '/login',
+  validator.body(logInSchema.bodySchema),
+  controller.logIn
+);
+
 router.get(
   '/users/:id',
   validator.params(getUserSchema.paramsSchema),

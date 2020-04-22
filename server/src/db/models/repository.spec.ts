@@ -1,4 +1,4 @@
-const { User, Friendship } = require("./index");
+const { User, Friendship } = require('./index');
 const { FriendStatus } = require('../../lib/constants');
 import { getUserFriendsList } from './repository';
 import { expect } from 'chai';
@@ -12,9 +12,9 @@ describe('Repository -', () => {
 
   describe('#getUserFriendsList', () => {
     it('get all friends for user (w/ friendships saved as user)', async () => {
-      const userA = await User.createUser({ userId: 'userA' });
-      const userB = await User.createUser({ userId: 'userB' });
-      const userC = await User.createUser({ userId: 'userC' });
+      const userA = await User.createUser({ username: 'userA' });
+      const userB = await User.createUser({ username: 'userB' });
+      const userC = await User.createUser({ username: 'userC' });
 
       await Friendship.createFriendship({
         user: userA.id,
@@ -29,14 +29,14 @@ describe('Repository -', () => {
       });
 
       const friends = await getUserFriendsList(userA.id);
-      expect(friends[0].user.user_id).to.equal(userC.user_id);
-      expect(friends[1].user.user_id).to.equal(userB.user_id);
+      expect(friends[0].user.username).to.equal(userC.username);
+      expect(friends[1].user.username).to.equal(userB.username);
     });
 
     it('get all friends for user (w/ friendships saved as friend)', async () => {
-      const userA = await User.createUser({ userId: 'userA' });
-      const userB = await User.createUser({ userId: 'userB' });
-      const userC = await User.createUser({ userId: 'userC' });
+      const userA = await User.createUser({ username: 'userA' });
+      const userB = await User.createUser({ username: 'userB' });
+      const userC = await User.createUser({ username: 'userC' });
 
       await Friendship.createFriendship({
         user: userA.id,
@@ -52,7 +52,7 @@ describe('Repository -', () => {
 
       const friends = await getUserFriendsList(userC.id);
 
-      expect(friends[0].user.user_id).to.equal(userA.user_id);
+      expect(friends[0].user.username).to.equal(userA.username);
     });
   });
 

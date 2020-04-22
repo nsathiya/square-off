@@ -40,6 +40,7 @@
     "watch": "rm -rf dist && tsc && tsc -w",
     "serve": "NODE_ENV=development nodemon dist/index.js",
     "test": "NODE_ENV=test mocha -r ts-node/register 'src/**/*.spec.ts'",
+    "pretest": "NODE_ENV=test npx sequelize db:migrate:undo:all && NODE_ENV=test npx sequelize db:migrate",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "migrate-up": "db-migrate up -e dev",
     "prettier": "prettier src/**/*.* --write --parser \"typescript\""

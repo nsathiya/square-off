@@ -1,6 +1,19 @@
 import { getUserFriendsList } from '../db/models/repository';
 const db = require('../db/models');
-const { FriendStatus } = require('../lib/constants')
+const { FriendStatus } = require('../lib/constants');
+
+module.exports.logIn = async (req, res, next) => {
+  try {
+    const username: string = req.body.username;
+
+    const user = await db.User.getUserByUsername(username);
+
+    res.status(200).send({ message: user });
+  } catch (e) {
+    console.log('getUser request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
 
 // TODO move to users.js
 module.exports.getUser = async (req, res, next) => {
@@ -30,14 +43,14 @@ module.exports.getAllUsers = async (req, res, next) => {
 
 module.exports.createUser = async (req, res, next) => {
   try {
-    const userId = req.body.user_id;
+    const username = req.body.username;
     const firstName = req.body.first_name;
     const lastName = req.body.last_name;
     const email = req.body.email;
     const phoneNumber = req.body.phone_number;
 
     const user = await db.User.createUser({
-      userId,
+      username,
       firstName,
       lastName,
       email,
@@ -63,22 +76,23 @@ module.exports.getUserFriendsList = async (req, res, next) => {
     console.log('getUserFriendsList request error: ', e);
     res.status(500).send({ error: e.message });
   }
-}
+};
 
 // TODO move to friedships.js
 module.exports.createPendingFriendship = async (req, res, next) => {
   try {
 
     const user = req.params.id;
-    const friend = req.body.friendId;
+    const friendId = req.body.friendId;
 
     const friendship = await db.Friendship.createFriendship({
       user,
-      friend,
+      friend: friendId,
       status: FriendStatus.PENDING,
     });
+    const friend = await db.User.getUserById(friendId);
 
-    res.status(200).send({ message: friendship });
+    res.status(200).send({ message: { friendship, friend } });
   } catch (e) {
     console.log('createPendingFriendship request error: ', e);
     res.status(500).send({ error: e.message });

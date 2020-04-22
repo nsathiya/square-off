@@ -17,14 +17,7 @@ const sequelize = new Sequelize(
   }
 );
 
-interface dbObject {
-  sequelize: any,
-  Sequelize: any,
-  User: any,
-  Friendship: any,
-}
-
-const db:any = {
+const db: any = {
   sequelize,
   Sequelize,
   User: initUser(sequelize),

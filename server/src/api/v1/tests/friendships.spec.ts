@@ -19,8 +19,8 @@ describe('Friendships routes', () => {
 
   describe('create a new pending friendship', () => {
     it('with correct input should respond with 200', async () => {
-      const userA = await User.createUser({ userId: 'userA' });
-      const userB = await User.createUser({ userId: 'userB' });
+      const userA = await User.createUser({ username: 'userA' });
+      const userB = await User.createUser({ username: 'userB' });
 
       const response: any = await chai.request(app)
           .post(`/api/v1/friendships/user/${userA.id}/pending`)
@@ -30,18 +30,19 @@ describe('Friendships routes', () => {
           });
 
       expect(response.statusCode).to.equal(200);
-      expect(response.body.message.user).to.equal(userA.id);
-      expect(response.body.message.friend).to.equal(userB.id);
-      expect(response.body.message.status).to.equal(FriendStatus.PENDING);
+      expect(response.body.message.friendship.user).to.equal(userA.id);
+      expect(response.body.message.friendship.friend).to.equal(userB.id);
+      expect(response.body.message.friendship.status).to.equal(FriendStatus.PENDING);
+      expect(response.body.message.friend.id).to.equal(userB.id);
 
       const friendsForUserA = await getUserFriendsList(userA.id);
       const friendsForUserB = await getUserFriendsList(userB.id);
-      expect(friendsForUserA[0].user.user_id).to.equal(userB.user_id);
-      expect(friendsForUserB[0].user.user_id).to.equal(userA.user_id);
+      expect(friendsForUserA[0].user.username).to.equal(userB.username);
+      expect(friendsForUserB[0].user.username).to.equal(userA.username);
     });
 
     it('with non-guid user id should respond with 400', async () => {
-      const userB = await User.createUser({ userId: 'userB' });
+      const userB = await User.createUser({ username: 'userB' });
       const response: any = await chai.request(app)
           .post(`/api/v1/friendships/user/123/pending`)
           .set('content-type', 'application/json')
@@ -49,19 +50,19 @@ describe('Friendships routes', () => {
             friendId: userB.id
           });
       expect(response.statusCode).to.equal(400);
-      expect(response.text).to.equal('Error validating request params. "id" must be a valid GUID.')
+      expect(response.text).to.equal('Error validating request params. "id" must be a valid GUID.');
     });
 
-    it('with non-guid/valid friendId should respond with 400', async () => {
-      const userA = await User.createUser({ userId: 'userA' });
+    it('with non-guid/invalid friendId should respond with 400', async () => {
+      const userA = await User.createUser({ username: 'userA' });
       const response: any = await chai.request(app)
           .post(`/api/v1/friendships/user/${userA.id}/pending`)
           .set('content-type', 'application/json')
           .send({
-            friendId: null
+            friendId: null,
           });
       expect(response.statusCode).to.equal(400);
-      expect(response.text).to.equal('Error validating request body. "friendId" must be a string.')
+      expect(response.text).to.equal('Error validating request body. "friendId" must be a string.');
     });
   });
 

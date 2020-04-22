@@ -1,5 +1,5 @@
-import * as Sequelize from "sequelize";
-import { FriendStatus } from "../../lib/constants";
+import * as Sequelize from 'sequelize';
+import { FriendStatus } from '../../lib/constants';
 
 interface FriendshipAttributes {
   id?: string;
@@ -41,12 +41,12 @@ export function initFriendship(sequelize: Sequelize.Sequelize) {
       defaultValue: FriendStatus.PENDING,
     },
   };
-  const Friendship = sequelize.define<FriendshipInstance, FriendshipAttributes>("Friendships", attributes);
+  const Friendship = sequelize.define<FriendshipInstance, FriendshipAttributes>('Friendships', attributes);
 
   Friendship.associate = (models) => {
     Friendship.belongsTo(models.User, { as: 'seeker', foreignKey: 'user' });
     Friendship.belongsTo(models.User, { as: 'target', foreignKey: 'friend' });
-  }
+  };
 
   // CRUD operations for this model
 
@@ -56,11 +56,11 @@ export function initFriendship(sequelize: Sequelize.Sequelize) {
     status,
   }) => {
     return Friendship.create({ user, friend, status });
-  }
+  };
 
   // Not needed currently
   // Friendship.getFriendshipById = (id) => {
   //   return Friendship.findByPk(id);
   // }
   return Friendship;
-};
+}

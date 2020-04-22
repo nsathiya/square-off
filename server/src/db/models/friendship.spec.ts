@@ -11,8 +11,8 @@ describe('Friendship model', () => {
   });
 
   it('create a new friendship', async () => {
-    const userA = await User.createUser({ userId: 'userA' });
-    const userB = await User.createUser({ userId: 'userB' });
+    const userA = await User.createUser({ username: 'userA' });
+    const userB = await User.createUser({ username: 'userB' });
 
     const friendship = await Friendship.createFriendship({
       user: userA.id,

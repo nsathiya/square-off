@@ -117,10 +117,8 @@ export function getFriends(userId: string): (dispatch: ThunkDispatch<{}, void, A
 
     try {
       const friends = await getFriendslistApi(userId);
-      console.log('friends', friends);
       // TODO change type of friend
       friends.forEach((friend: any) => {
-        console.log('friend', friend);
         dispatch(Success(keys.ADD_FRIEND, { friend }));
       });
     } catch (err) {

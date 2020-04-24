@@ -1,6 +1,8 @@
 import * as Sequelize from 'sequelize';
 import { initUser } from './user';
 import { initFriendship } from './friendship';
+import { initChallenge } from './challenge';
+import { initScorecard } from './scorecard';
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config.js')[env];
@@ -14,6 +16,10 @@ const sequelize = new Sequelize(
     host: config.host,
     dialect: config.dialect,
     logging: false,
+    dialectOptions: {
+      useUTC: false,
+      dateStrings: true,
+    },
   }
 );
 
@@ -22,6 +28,8 @@ const db: any = {
   Sequelize,
   User: initUser(sequelize),
   Friendship: initFriendship(sequelize),
+  Challenge: initChallenge(sequelize),
+  Scorecard: initScorecard(sequelize),
 };
 
 Object.values(db).forEach((model: any) => {

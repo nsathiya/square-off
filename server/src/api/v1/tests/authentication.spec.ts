@@ -32,8 +32,6 @@ describe('Authentication routes', () => {
             username: 'johnd',
           });
 
-          console.log('response', response.body);
-
       expect(response.statusCode).to.equal(200);
       expect(response.body.message.username).to.equal('johnd');
       expect(response.body.message.first_name).to.equal('john');

@@ -62,7 +62,7 @@ export function initChallenge(sequelize: Sequelize.Sequelize) {
   const Challenge = sequelize.define<ChallengeInstance, ChallengeAttributes>('Challenges', attributes);
 
   Challenge.associate = (models) => {
-
+    Challenge.hasMany(models.Scorecard, { foreignKey: 'challengeId' });
   };
 
   // CRUD operations for this model

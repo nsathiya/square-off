@@ -57,13 +57,14 @@ export function initUser(sequelize: Sequelize.Sequelize) {
     email?: string,
     phoneNumber?: string
   }) => {
-    return User.create({
+    const user = await User.create({
        username: username,
        first_name: firstName,
        last_name: lastName,
        email: email,
        phone_number: phoneNumber
     });
+    return user.get();
   };
 
   User.getUserById = async (id: string): Promise<any> => {

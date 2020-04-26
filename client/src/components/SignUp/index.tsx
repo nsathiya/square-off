@@ -75,7 +75,6 @@ function SignUp(props: SignUpProps) {
     // phone_number: user.phoneNumber,
     props.signUp(values);
   };
-  console.log('user in history ', props.user);
   if (props.user.isAuthenticated) {
     const history = useHistory();
     history.push('/friends-list');
@@ -97,11 +96,9 @@ function SignUp(props: SignUpProps) {
             <Typography component="h1" variant="h5">
               Create an Account
             </Typography>
-
-              <SquareForm onSubmit={onSubmit}>
-                <SignUpForm />
-              </SquareForm>
-
+            <SquareForm onSubmit={onSubmit}>
+              <SignUpForm />
+            </SquareForm>
           </Box>
         </Grid>
       </Grid>

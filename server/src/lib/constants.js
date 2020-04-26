@@ -6,7 +6,7 @@ const FriendStatus = {
 
 const ChallengeStatus = {
   HAVE_NOT_STARTED: 'HAVE_NOT_STARTED',
-  IN_PROGRESS: 'IN_PROGRESS',
+  ACTIVE: 'ACTIVE',
   FINISHED: 'FINISHED',
 }
 

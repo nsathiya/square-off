@@ -2,8 +2,8 @@ const { User, Friendship, Challenge, Scorecard } = require('./index');
 const { FriendStatus, ScorecardStatus } = require('../../lib/constants');
 import {
   getUserFriendsList,
-  getAllChallengesForUser,
-  getChallengeDataForUser,
+  getUserChallenges,
+  getChallengeParticipants,
 } from './repository';
 import { expect } from 'chai';
 import { createChallenge } from '../../test/helper';
@@ -62,7 +62,7 @@ describe('Repository -', () => {
     });
   });
 
-  describe('#getAllChallengesForUser', () => {
+  describe('#getUserChallenges', () => {
     it('get all challenges and right status for user (w/ friendships saved as user)', async () => {
       const user = await User.createUser({ username: 'userA' });
       const challengeA = await createChallenge();
@@ -70,7 +70,7 @@ describe('Repository -', () => {
       await Scorecard.createScorecard({ userId: user.id, challengeId: challengeA.id, status: ScorecardStatus.DECLINED });
       await Scorecard.createScorecard({ userId: user.id, challengeId: challengeB.id });
 
-      const challenges = await getAllChallengesForUser(user.id);
+      const challenges = await getUserChallenges(user.id);
 
       expect(challenges.length).to.equal(2);
       expect(challenges[0].challenge).to.deep.equal(challengeB);
@@ -84,14 +84,14 @@ describe('Repository -', () => {
       const challengeA = await createChallenge();
       const challengeB = await createChallenge();
 
-      const challenges = await getAllChallengesForUser(user.id);
+      const challenges = await getUserChallenges(user.id);
 
       expect(challenges.length).to.equal(0);
     });
   });
 
   describe('#getChallengeDataForUser', () => {
-    it('get challenge info and all participants with all permutations', async () => {
+    it('get challenge participants with multiple users', async () => {
       const userA = await User.createUser({ username: 'userA' });
       const userB = await User.createUser({ username: 'userB' });
       const userC = await User.createUser({ username: 'userC' });
@@ -101,31 +101,20 @@ describe('Repository -', () => {
       await Scorecard.createScorecard({ userId: userB.id, challengeId: challenge.id });
       await Scorecard.createScorecard({ userId: userC.id, challengeId: challenge.id });
 
-      const challengeData: any = await getChallengeDataForUser(challenge.id, userA.id);
+      const challengeData = await getChallengeParticipants(challenge.id);
 
       expect(challengeData.data).to.deep.equal(challenge);
-      expect(challengeData.participants.length).to.equal(2);
+      expect(challengeData.participants.length).to.equal(3);
       expect(challengeData.participants[0]).to.deep.equal(userC);
       expect(challengeData.participants[1]).to.deep.equal(userB);
-
-      const challengeDataForB: any = await getChallengeDataForUser(challenge.id, userB.id);
-
-      expect(challengeDataForB.participants.length).to.equal(2);
-      expect(challengeDataForB.participants[0]).to.deep.equal(userC);
-      expect(challengeDataForB.participants[1]).to.deep.equal(userA);
-
-      const challengeDataForC: any = await getChallengeDataForUser(challenge.id, userC.id);
-
-      expect(challengeDataForC.participants.length).to.equal(2);
-      expect(challengeDataForC.participants[0]).to.deep.equal(userB);
-      expect(challengeDataForC.participants[1]).to.deep.equal(userA);
+      expect(challengeData.participants[2]).to.deep.equal(userA);
     });
 
     it.skip('get empty challengeData for user with none', async () => {
       const userA = await User.createUser({ username: 'userA' });
       const challenge = await createChallenge();
 
-      const challengeData: any = await getChallengeDataForUser(challenge.id, userA.id);
+      const challengeData = await getChallengeParticipants(challenge.id);
 
       expect(challengeData).to.be.undefined;
     });

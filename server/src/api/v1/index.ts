@@ -6,8 +6,13 @@ const {
   logInSchema,
   getUserSchema,
   getUserFriendsListSchema,
+  getUserChallengesSchema,
+  getChallengeSchema,
   createUserSchema,
   createPendingFriendshipSchema,
+  createChallengeSchema,
+  editChallengeSchema,
+  getChallengeParticipantsSchema
 } = require('./validators');
 
 const router = express.Router();
@@ -43,11 +48,44 @@ router.get(
   controller.getUserFriendsList,
 );
 
+router.get(
+  '/users/:id/challenges',
+  validator.params(getUserChallengesSchema.paramsSchema),
+  controller.getUserChallenges,
+);
+
 router.post(
   '/friendships/user/:id/pending',
   validator.params(createPendingFriendshipSchema.paramsSchema),
   validator.body(createPendingFriendshipSchema.bodySchema),
   controller.createPendingFriendship
+);
+
+router.get(
+  '/challenges/:id',
+  validator.params(getChallengeSchema.paramsSchema),
+  controller.getChallenge,
+);
+
+router.post(
+  '/challenges',
+  validator.body(createChallengeSchema.bodySchema),
+  controller.createChallenge,
+);
+
+//
+router.patch(
+  '/challenges/:id',
+  validator.params(editChallengeSchema.paramsSchema),
+  validator.body(editChallengeSchema.bodySchema),
+  controller.editChallenge,
+);
+
+//
+router.get(
+  '/challenges/:id/participants',
+  validator.params(getChallengeParticipantsSchema.paramsSchema),
+  controller.getChallengeParticipants,
 );
 
 

@@ -1,10 +1,11 @@
-const { User, Friendship } = require('../../../db/models');
+const { User, Friendship, Scorecard, Challenge } = require('../../../db/models');
 import * as chai from 'chai';
 import { expect } from 'chai';
 import chaiHttp = require('chai-http');
 import chaiExclude from 'chai-exclude';
 import app from '../../../index';
-const { FriendStatus } = require('../../../lib/constants');
+const { FriendStatus, ScorecardStatus } = require('../../../lib/constants');
+const { createChallenge } = require('../../../test/helper');
 import 'mocha';
 
 chai.use(chaiExclude);
@@ -14,6 +15,8 @@ describe('Users routes', () => {
   beforeEach(async () => {
     await Friendship.truncate({ cascade: true });
     await User.truncate({ cascade: true });
+    await Challenge.truncate({ cascade: true });
+    await Scorecard.truncate({ cascade: true });
   });
 
   describe('create a new user', () => {
@@ -157,6 +160,37 @@ describe('Users routes', () => {
           .set('content-type', 'application/json');
 
       const excludedFields = ['id', 'createdAt', 'updatedAt'];
+      expect(response.statusCode).to.equal(400);
+      expect(response.text).to.equal('Error validating request params. "id" must be a valid GUID.');
+    });
+  });
+
+  describe('get user\'s challenges', () => {
+    it('with correct input should respond with 200', async () => {
+      const user = await User.createUser({ username: 'userA' });
+      const challenge = await createChallenge();
+      const challenge2 = await createChallenge({ name: 'Challenge 2'});
+
+      await Scorecard.createScorecard({ userId: user.id, challengeId: challenge.id });
+      await Scorecard.createScorecard({ userId: user.id, challengeId: challenge2.id });
+
+      const response: any = await chai.request(app)
+          .get(`/api/v1/users/${user.id}/challenges`)
+          .set('content-type', 'application/json');
+
+      const challenges = response.body.message;
+      expect(challenges.length).to.equal(2);
+      expect(challenges[0].challenge.id).to.equal(challenge2.id);
+      expect(challenges[0].status).to.equal(ScorecardStatus.ACCEPTED);
+      expect(challenges[1].challenge.id).to.equal(challenge.id);
+      expect(challenges[1].status).to.equal(ScorecardStatus.ACCEPTED);
+    });
+
+    it('with no valid challenge id should respond with 400', async () => {
+      const response: any = await chai.request(app)
+          .get(`/api/v1/users/123/challenges`)
+          .set('content-type', 'application/json');
+
       expect(response.statusCode).to.equal(400);
       expect(response.text).to.equal('Error validating request params. "id" must be a valid GUID.');
     });

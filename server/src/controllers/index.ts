@@ -1,4 +1,8 @@
-import { getUserFriendsList } from '../db/models/repository';
+import {
+  getUserFriendsList,
+  getUserChallenges,
+  getChallengeParticipants
+} from '../db/models/repository';
 const db = require('../db/models');
 const { FriendStatus } = require('../lib/constants');
 
@@ -10,7 +14,7 @@ module.exports.logIn = async (req, res, next) => {
 
     res.status(200).send({ message: user });
   } catch (e) {
-    console.log('getUser request error: ', e);
+    console.error('getUser request error: ', e);
     res.status(500).send({ error: e.message });
   }
 };
@@ -24,7 +28,7 @@ module.exports.getUser = async (req, res, next) => {
 
     res.status(200).send({ message: user });
   } catch (e) {
-    console.log('getUser request error: ', e);
+    console.error('getUser request error: ', e);
     res.status(500).send({ error: e.message });
   }
 };
@@ -36,7 +40,7 @@ module.exports.getAllUsers = async (req, res, next) => {
 
     res.status(200).send({ message: users });
   } catch (e) {
-    console.log('getAllUsers request error: ', e);
+    console.error('getAllUsers request error: ', e);
     res.status(500).send({ error: e.message });
   }
 };
@@ -59,7 +63,7 @@ module.exports.createUser = async (req, res, next) => {
 
     res.status(200).send({ message: user });
   } catch (e) {
-    console.log('createUser request error: ', e);
+    console.error('createUser request error: ', e);
     res.status(500).send({ error: e.message });
   }
 };
@@ -69,11 +73,25 @@ module.exports.getUserFriendsList = async (req, res, next) => {
 
     const id = req.params.id;
 
-    const friendship = await getUserFriendsList(id);
+    const friends = await getUserFriendsList(id);
 
-    res.status(200).send({ message: friendship });
+    res.status(200).send({ message: friends });
   } catch (e) {
-    console.log('getUserFriendsList request error: ', e);
+    console.error('getUserFriendsList request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.getUserChallenges = async (req, res, next) => {
+  try {
+
+    const userId = req.params.id;
+
+    const challenges = await getUserChallenges(userId);
+
+    res.status(200).send({ message: challenges });
+  } catch (e) {
+    console.error('getUserChallenges request error: ', e);
     res.status(500).send({ error: e.message });
   }
 };
@@ -94,7 +112,65 @@ module.exports.createPendingFriendship = async (req, res, next) => {
 
     res.status(200).send({ message: { friendship, friend } });
   } catch (e) {
-    console.log('createPendingFriendship request error: ', e);
+    console.error('createPendingFriendship request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.getChallenge = async (req, res, next) => {
+  try {
+
+    const challengeId = req.params.id;
+
+    const challenge = await db.Challenge.getById(challengeId);
+
+    res.status(200).send({ message: challenge });
+  } catch (e) {
+    console.error('getChallenge request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.getChallengeParticipants = async (req, res, next) => {
+  try {
+
+    const challengeId = req.params.id;
+
+    const challenge = await getChallengeParticipants(challengeId);
+    res.status(200).send({ message: challenge.participants });
+  } catch (e) {
+    console.error('getChallengeParticipants request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.createChallenge = async (req, res, next) => {
+  try {
+    const { participants, ...challengeBody } = req.body;
+    const challengeDb = await db.Challenge.createChallenge(challengeBody);
+    // TODO Find out why.. wierd bug
+    const challenge =  challengeDb.get();
+    if (participants && challenge) {
+      const scorecards = participants.map((userId: string) => ({ userId, challengeId: challenge.id }));
+      const scorecardsDb = await db.Scorecard.createScorecards(scorecards);
+      challenge.participants = scorecardsDb.map(scorecard => scorecard.userId);
+    }
+    res.status(200).send({ message: challenge });
+  } catch (e) {
+    console.error('createChallenge request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.editChallenge = async (req, res, next) => {
+  try {
+    const challengeId = req.params.id;
+    const challengeBody = req.body;
+
+    const challenge = await db.Challenge.editChallenge(challengeId, challengeBody);
+    res.status(200).send({ message: challenge });
+  } catch (e) {
+    console.error('editChallenge request error: ', e);
     res.status(500).send({ error: e.message });
   }
 };

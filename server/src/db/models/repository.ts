@@ -34,7 +34,7 @@ export async function getUserFriendsList(userId) {
 /*
   Only includes challenges for this particular user
 */
-export async function getAllChallengesForUser(userId: string) {
+export async function getUserChallenges(userId: string) {
     const scorecards = await Scorecard.findAll({
       where: { userId },
       include: [
@@ -51,9 +51,8 @@ export async function getAllChallengesForUser(userId: string) {
 
 /*
  includes challenge data and all participant details
- TODO redo query
 */
-export async function getChallengeDataForUser(challengeId: string, userId: string) {
+export async function getChallengeParticipants(challengeId: string) {
     const challenge = await Challenge.findOne({
       where: { id: challengeId },
       include: [
@@ -61,11 +60,6 @@ export async function getChallengeDataForUser(challengeId: string, userId: strin
           model: Scorecard,
           include: {
             model: User,
-            where: {
-              id: {
-                [Sequelize.Op.not]: userId
-              }
-            }
           },
           order: [['createdAt', 'DESC']],
         }

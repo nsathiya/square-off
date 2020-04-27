@@ -65,5 +65,9 @@ export function initScorecard(sequelize: Sequelize.Sequelize) {
     return Scorecard.create({ userId, challengeId, status, data });
   };
 
+  Scorecard.createScorecards = async (scorecards: [{ userId: string, challengeId: string, status?: string, data?: {}}]) => {
+    return Scorecard.bulkCreate(scorecards);
+  };
+
   return Scorecard;
 }

@@ -75,7 +75,7 @@ export function initChallenge(sequelize: Sequelize.Sequelize) {
     start_time,
     end_time,
   }: ChallengeAttributes) => {
-    return Challenge.create({
+    const challenge = await Challenge.create({
       name,
       exercise,
       metric,
@@ -83,6 +83,7 @@ export function initChallenge(sequelize: Sequelize.Sequelize) {
       start_time,
       end_time,
     });
+    return challenge;
   };
 
   Challenge.editChallenge = async (id: string, updates: {
@@ -93,7 +94,8 @@ export function initChallenge(sequelize: Sequelize.Sequelize) {
     start_time?: string;
     end_time?: string;
   }) => {
-    return Challenge.update(updates, { where: { id }});
+    const challenge = await Challenge.update(updates, { where: { id }, returning: true, plain: true });
+    return challenge[1].dataValues;
   };
 
   Challenge.getById = (id: string) => {

@@ -8,9 +8,12 @@ import {
   getAllUsers as getAllUsersApi,
   createFriendship as createFriendshipApi,
   getFriendslist as getFriendslistApi,
+  createChallenge as createChallengeApi,
+  getChallenges as getChallengeApi,
 } from '../api';
 import IStoreState from '../store/IStoreState';
 import keys from './actionTypesKeys';
+import { Challenge } from '../types';
 
 import {
   ISignUpFailAction,
@@ -133,8 +136,35 @@ export function createFriend(userId: string, userIdForFriend: string): (dispatch
 
     try {
       const friend = await createFriendshipApi(userId, userIdForFriend);
-      console.log('friend', friend);
       dispatch(Success(keys.ADD_FRIEND, { friend }));
+    } catch (err) {
+      dispatch(Fail(err));
+    }
+  };
+}
+
+export function createChallenge(challenge: Challenge): (dispatch: Dispatch) => Promise<void> {
+  return async (dispatch: Dispatch) => {
+    dispatch(InProgress());
+
+    try {
+      const friend = await createChallengeApi(challenge);
+      dispatch(Success(keys.ADD_CHALLENGE, { friend }));
+    } catch (err) {
+      dispatch(Fail(err));
+    }
+  };
+}
+
+export function getChallenges(userId: string): (dispatch: Dispatch) => Promise<void> {
+  return async (dispatch: Dispatch) => {
+    dispatch(InProgress());
+
+    try {
+      const challenges = await getChallengeApi(userId);
+      challenges.forEach((challenge: Challenge) => {
+        dispatch(Success(keys.ADD_CHALLENGE, { challenge }));
+      });
     } catch (err) {
       dispatch(Fail(err));
     }

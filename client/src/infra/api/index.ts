@@ -1,4 +1,5 @@
 import { post, get } from './httpClient';
+import { Challenge } from '../types';
 
 export async function getAllUsers(): Promise<any> {
   const path: string = `/v1/users`;
@@ -32,5 +33,48 @@ export async function createFriendship(userId: string, userIdForFriend: string):
     lastName: friend.last_name,
     email: friend.email,
     phoneNumber: friend.phone_number,
+  };
+}
+
+export async function getChallenges(userId: string): Promise<[Challenge]> {
+  const path: string = `/v1/users/${userId}/challenges`;
+  const { challenges } = await get(path);
+  return challenges.map((challenge: any) => ({
+    id: challenge.id,
+    name: challenge.name,
+    exercise: challenge.exercise,
+    metric: challenge.metric,
+    status: challenge.status,
+    startTime: challenge.start_time,
+    endTime: challenge.end_time,
+  }));
+}
+
+export async function createChallenge({
+  name,
+  exercise,
+  metric,
+  startTime,
+  endTime,
+  participants }: Challenge ): Promise<Challenge> {
+  const path: string = `/v1/challenges`;
+  const body = {
+    name: name,
+    exercise: exercise,
+    metric: metric,
+    start_time: startTime,
+    end_time:  endTime,
+    participants,
+  };
+  const { challenge } = await post(path, body);
+  return {
+    id: challenge.id,
+    name: challenge.name,
+    exercise: challenge.exercise,
+    metric: challenge.metric,
+    status: challenge.status,
+    startTime: challenge.start_time,
+    endTime: challenge.end_time,
+    participants: challenge.participants,
   };
 }

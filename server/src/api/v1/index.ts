@@ -73,7 +73,6 @@ router.post(
   controller.createChallenge,
 );
 
-//
 router.patch(
   '/challenges/:id',
   validator.params(editChallengeSchema.paramsSchema),

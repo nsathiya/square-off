@@ -92,7 +92,6 @@ export function logIn(username: string, password: string )
 
     try {
       const user = await logInApi(username, password);
-      console.log('user', user);
       dispatch(Success(keys.LOGIN_SUCCESS, { user }));
     } catch (err) {
       dispatch(Fail(err));
@@ -148,8 +147,8 @@ export function createChallenge(challenge: Challenge): (dispatch: Dispatch) => P
     dispatch(InProgress());
 
     try {
-      const friend = await createChallengeApi(challenge);
-      dispatch(Success(keys.ADD_CHALLENGE, { friend }));
+      const newChallenge = await createChallengeApi(challenge);
+      dispatch(Success(keys.ADD_CHALLENGE, { challenge: newChallenge }));
     } catch (err) {
       dispatch(Fail(err));
     }

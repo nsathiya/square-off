@@ -38,8 +38,8 @@ export async function createFriendship(userId: string, userIdForFriend: string):
 
 export async function getChallenges(userId: string): Promise<[Challenge]> {
   const path: string = `/v1/users/${userId}/challenges`;
-  const { challenges } = await get(path);
-  return challenges.map((challenge: any) => ({
+  const body = await get(path);
+  return body.map(({ challenge }: any) => ({
     id: challenge.id,
     name: challenge.name,
     exercise: challenge.exercise,

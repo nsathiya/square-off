@@ -13,10 +13,12 @@ import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import List from '@material-ui/core/List';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-// import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems } from '../Main/withMain';
+import { useHistory } from 'react-router-dom';
 
 import AddFriend from './AddFriends';
 import FriendsList from './FriendsList';
@@ -121,7 +123,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const history = useHistory();
+
+  const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -166,14 +170,7 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        {
-          /*
-          <List>{mainListItems}</List>
-          <Divider />
-          <List>{secondaryListItems}</List>
-          */
-        }
-
+        <List>{mainListItems(history)}</List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

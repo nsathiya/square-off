@@ -76,8 +76,8 @@ function LogIn(props: Props) {
   };
 
   if (props.user.isAuthenticated) {
-    const history = useHistory();
-    history.push('/friends-list');
+  const history = useHistory();
+  history.push('/friends');
   }
 
   return (

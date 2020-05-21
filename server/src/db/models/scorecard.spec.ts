@@ -30,7 +30,26 @@ describe('Scorecard model', () => {
       userId: userA.id,
       challengeId: challenge.id,
       status: ScorecardStatus.ACCEPTED,
-      data: { activities: {} },
+      data: { score: 0 },
+    });
+  });
+
+  it('create scorecards', async () => {
+    const userA = await User.createUser({ username: 'userA' });
+
+    const challenge = await createChallenge();
+    const scorecard = (await Scorecard.createScorecard({
+      userId: userA.id,
+      challengeId: challenge.id,
+    })).get();
+
+    const excludedFields = ['id', 'createdAt', 'updatedAt'];
+    expect(scorecard.id).to.exist;
+    expect(scorecard).excluding(excludedFields).to.deep.equal({
+      userId: userA.id,
+      challengeId: challenge.id,
+      status: ScorecardStatus.ACCEPTED,
+      data: { score: 0 },
     });
   });
 

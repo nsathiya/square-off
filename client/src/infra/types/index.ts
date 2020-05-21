@@ -1,5 +1,5 @@
 export type Challenge = {
-  id?: string;
+  id: string;
   name: string;
   exercise: string;
   status: string
@@ -7,7 +7,36 @@ export type Challenge = {
   startTime: Date;
   endTime: Date;
   participants?: Array<string>
+  activities?: Array<string>
+  scorecards?: Array<string>
 };
+
+export type Activity = {
+  id: string;
+  userId: string;
+  name: string;
+  distance: number;
+  distanceMetric?: DistanceMetric;
+  time: number; // in minutes
+  caloriesBurned?: number;
+  startTime: Date;
+  exercise: Exercise;
+  photos?: Array<any>;
+};
+
+export type Scorecard = {
+  id: string;
+  userId: string;
+  challengeId: string;
+  data: {};
+  score: number;
+};
+
+export enum DistanceMetric {
+  MILE = 'MILE',
+  KILOMETER = 'KILOMETER',
+  METER = 'METER',
+}
 
 export enum ChallengeStatus {
   HAVE_NOT_STARTED = 'HAVE_NOT_STARTED',

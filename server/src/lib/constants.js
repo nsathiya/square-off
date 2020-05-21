@@ -15,6 +15,12 @@ const ScorecardStatus = {
   DECLINED: 'DECLINED',
 }
 
+const DistanceMetric = {
+  MILE: 'MILE',
+  KILOMETER: 'KILOMETER',
+  METER: 'METER',
+}
+
 const Exercise = {
   CYCLE: 'CYCLE',
   RUN: 'RUN',
@@ -36,4 +42,5 @@ module.exports = {
   ScorecardStatus,
   Exercise,
   ExerciseMetric,
+  DistanceMetric,
 }

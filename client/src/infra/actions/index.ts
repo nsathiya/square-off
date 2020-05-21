@@ -1,4 +1,6 @@
 import keys from './actionTypesKeys';
+import { Scorecard, Activity, Challenge } from '../types';
+import { UserState } from '../reducers/userReducer';
 
 export interface ILogInSuccessAction {
   readonly type: keys.LOGIN_SUCCESS;
@@ -38,7 +40,12 @@ export interface ISignUpFailAction {
 
 export interface SuccessAction {
   readonly type: keys;
-  readonly payload: {};
+  readonly payload: {
+    readonly activity?: Activity;
+    readonly challenge?: Challenge;
+    readonly scorecard?: Scorecard;
+    readonly friend?: UserState; // TODO Clean to User
+  };
 }
 
 export interface InProgressAction {

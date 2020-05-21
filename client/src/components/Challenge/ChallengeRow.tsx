@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
 import { Challenge } from '../../infra/types';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,10 +33,11 @@ type Props = StateProps & DispatchProps & OwnProps;
 
 export default function ChallengeRow({ key, challenge }: Props) {
   const classes = useStyles();
+  const history = useHistory();
   // TODO
   const handleToggle = (id?: string) => { return; };
   return (
-    <ListItem key={key} button={true}>
+    <ListItem key={key} button={true} onClick={() => history.push(`/challenges/${challenge.id}`)}>
       <Grid
         container={true}
         direction={'column'}

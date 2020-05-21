@@ -2,24 +2,17 @@ import ActionTypeKeys from '../actions/actionTypesKeys';
 import ActionTypes from '../actions/actionTypes';
 
 export type UserState = {
-  id: string | null;
+  id: string;
   username: string | null;
   firstName: string | null;
   lastName: string | null;
   email: string | null;
   phoneNumber: string | null;
+  activities: Array<string>;
   isAuthenticated: boolean;
 };
 
-const initialState: UserState = {
-  id: null,
-  username: null,
-  firstName: null,
-  lastName: null,
-  email: null,
-  phoneNumber: null,
-  isAuthenticated: false,
-};
+const initialState: UserState = {};
 
 export function userReducer(
   state: UserState = initialState,

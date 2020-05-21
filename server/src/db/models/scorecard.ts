@@ -11,7 +11,7 @@ interface ScorecardAttributes {
   updatedAt?: string;
 }
 
-type ScorecardInstance = Sequelize.Instance<ScorecardAttributes> & ScorecardAttributes;
+export type ScorecardInstance = Sequelize.Instance<ScorecardAttributes> & ScorecardAttributes;
 
 export function initScorecard(sequelize: Sequelize.Sequelize) {
   const attributes: SequelizeAttributes<ScorecardAttributes> = {
@@ -44,7 +44,7 @@ export function initScorecard(sequelize: Sequelize.Sequelize) {
     data: {
       type: Sequelize.JSONB,
       allowNull: false,
-      defaultValue: { activities: {} },
+      defaultValue: { score: 0 },
     }
   };
   const Scorecard = sequelize.define<ScorecardInstance, ScorecardAttributes>('Scorecards', attributes);
@@ -67,6 +67,15 @@ export function initScorecard(sequelize: Sequelize.Sequelize) {
 
   Scorecard.createScorecards = async (scorecards: [{ userId: string, challengeId: string, status?: string, data?: {}}]) => {
     return Scorecard.bulkCreate(scorecards);
+  };
+
+  // TODO unit test
+  Scorecard.editScorecard = async (id: string, updates: {
+    status?: string;
+    data?: string;
+  }) => {
+    const scorecard = await Scorecard.update(updates, { where: { id }, returning: true, plain: true });
+    return scorecard[1].dataValues;
   };
 
   return Scorecard;

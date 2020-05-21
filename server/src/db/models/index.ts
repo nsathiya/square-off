@@ -3,6 +3,8 @@ import { initUser } from './user';
 import { initFriendship } from './friendship';
 import { initChallenge } from './challenge';
 import { initScorecard } from './scorecard';
+import { initActivity } from './activity';
+import { initActivityIndicator } from './activityIndicator';
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config.js')[env];
@@ -30,6 +32,8 @@ const db: any = {
   Friendship: initFriendship(sequelize),
   Challenge: initChallenge(sequelize),
   Scorecard: initScorecard(sequelize),
+  Activity: initActivity(sequelize),
+  ActivityIndicator: initActivityIndicator(sequelize),
 };
 
 Object.values(db).forEach((model: any) => {

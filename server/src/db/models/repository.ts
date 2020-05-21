@@ -1,6 +1,10 @@
-const { User, Friendship, Scorecard, Challenge } = require('./index');
+import { omit } from 'lodash';
 import * as Sequelize from 'sequelize';
+const { User, Friendship, Scorecard, Challenge, Activity, ActivityIndicator } = require('./index');
+import { ActivityInstance } from './activity';
 import { ChallengeStatus } from '../../lib/constants';
+
+const { Op } = Sequelize;
 
 export async function getUserFriendsList(userId) {
     const friendships = await Friendship.findAll({
@@ -49,10 +53,19 @@ export async function getUserChallenges(userId: string) {
     }));
 }
 
+// TODO unit test
+export async function getUserActivities(userId: string) {
+    const activities = await Activity.findAll({
+      where: { userId },
+      order: [['createdAt', 'DESC']],
+    });
+    return activities.map((activity: any) => (activity.get()));
+}
+
 /*
  includes challenge data and all participant details
 */
-export async function getChallengeParticipants(challengeId: string) {
+export async function getChallengeDetails(challengeId: string) {
     const challenge = await Challenge.findOne({
       where: { id: challengeId },
       include: [
@@ -62,15 +75,24 @@ export async function getChallengeParticipants(challengeId: string) {
             model: User,
           },
           order: [['createdAt', 'DESC']],
-        }
+        },
+        {
+          model: ActivityIndicator,
+          include: {
+            model: Activity,
+          },
+          order: [['createdAt', 'DESC']],
+        },
       ],
       order: [[{ model: Scorecard }, 'createdAt', 'DESC']],
       nest: true,
     });
-    const { Scorecards, ...challengeData } = challenge.get();
+    const { Scorecards, ActivityIndicators, ...challengeData } = challenge.get();
     return {
       data: challengeData,
-      participants: Scorecards.map((scorecard) => (scorecard.User.get()))
+      participants: Scorecards.map((scorecard) => (scorecard.User.get())),
+      scorecards: Scorecards.map((scorecard) => (omit(scorecard.get(), 'User'))),
+      activities: ActivityIndicators.map((activityIndicator) => (activityIndicator.Activity.get())),
     };
 }
 
@@ -84,6 +106,27 @@ export function getAllActiveChallengesForUser(userId: string) {
       include: [
         { model: User },
         { model: Challenge, where: { status: ChallengeStatus.ACTIVE } }
+      ],
+      order: [['createdAt', 'DESC']],
+      raw: true,
+      nest: true,
+    });
+}
+
+export function getScorecardsToUpdateForActivity(activity: ActivityInstance) {
+    const {userId, startTime, exercise} = activity;
+    return Scorecard.findAll({
+      where: { userId },
+      include: [
+        { model: User },
+        {
+          model: Challenge,
+          where: {
+            exercise,
+            start_time: { [Op.lte]: startTime },
+            end_time: { [Op.gte]: startTime },
+          }
+        }
       ],
       order: [['createdAt', 'DESC']],
       raw: true,

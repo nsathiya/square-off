@@ -33,7 +33,7 @@ module.exports = {
         data: {
           type: Sequelize.JSONB,
           allowNull: false,
-          defaultValue: { activities: {} },
+          defaultValue: { score: 0 },
         },
         createdAt: {
           allowNull: false,

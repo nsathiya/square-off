@@ -4,15 +4,19 @@ const controller = require('../../controllers');
 const { createValidator } = require('express-joi-validation');
 const {
   logInSchema,
+  createUserSchema,
   getUserSchema,
   getUserFriendsListSchema,
   getUserChallengesSchema,
-  getChallengeSchema,
-  createUserSchema,
+  getUserActivitiesSchema,
   createPendingFriendshipSchema,
   createChallengeSchema,
   editChallengeSchema,
-  getChallengeParticipantsSchema
+  getChallengeParticipantsSchema,
+  getChallengeActivitiesSchema,
+  getChallengeScorecardsSchema,
+  getChallengeSchema,
+  createActivitySchema
 } = require('./validators');
 
 const router = express.Router();
@@ -25,6 +29,7 @@ router.post(
   controller.logIn
 );
 
+// Users
 router.get(
   '/users/:id',
   validator.params(getUserSchema.paramsSchema),
@@ -54,6 +59,14 @@ router.get(
   controller.getUserChallenges,
 );
 
+// TODO route test
+router.get(
+  '/users/:id/activities',
+  validator.params(getUserActivitiesSchema.paramsSchema),
+  controller.getUserActivities,
+);
+
+// Friendships
 router.post(
   '/friendships/user/:id/pending',
   validator.params(createPendingFriendshipSchema.paramsSchema),
@@ -61,6 +74,8 @@ router.post(
   controller.createPendingFriendship
 );
 
+
+// Challenges
 router.get(
   '/challenges/:id',
   validator.params(getChallengeSchema.paramsSchema),
@@ -80,12 +95,31 @@ router.patch(
   controller.editChallenge,
 );
 
-//
 router.get(
   '/challenges/:id/participants',
   validator.params(getChallengeParticipantsSchema.paramsSchema),
   controller.getChallengeParticipants,
 );
 
+router.get(
+  '/challenges/:id/activities',
+  validator.params(getChallengeActivitiesSchema.paramsSchema),
+  controller.getChallengeActivities,
+);
+
+router.get(
+  '/challenges/:id/scorecards',
+  validator.params(getChallengeScorecardsSchema.paramsSchema),
+  controller.getChallengeScorecards,
+);
+
+
+// Activities
+//
+router.post(
+  '/activities',
+  validator.body(createActivitySchema.bodySchema),
+  controller.createActivity,
+);
 
 module.exports = router;

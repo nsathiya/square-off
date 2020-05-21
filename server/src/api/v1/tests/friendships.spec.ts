@@ -59,7 +59,7 @@ describe('Friendships routes', () => {
           .post(`/api/v1/friendships/user/${userA.id}/pending`)
           .set('content-type', 'application/json')
           .send({
-            friendId: null,
+            friendId: undefined,
           });
       expect(response.statusCode).to.equal(400);
       expect(response.text).to.equal('Error validating request body. "friendId" must be a string.');

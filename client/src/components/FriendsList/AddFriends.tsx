@@ -75,7 +75,7 @@ class AddFriends extends React.Component<AddFriendsProps, AddFriendsState> {
   }
 
   onSearch(query: string) {
-    const usersMatched = this.props.users!.filter(user => {
+    const usersMatched = Object.values(this.props.users!).filter(user => {
       let searchSpace: string = '';
       if (user.firstName) {
         searchSpace += `${user.firstName.toLowerCase()} `;

@@ -1,10 +1,12 @@
 import {
   getUserFriendsList,
   getUserChallenges,
-  getChallengeParticipants
+  getUserActivities,
+  getChallengeDetails
 } from '../db/models/repository';
 const db = require('../db/models');
 const { FriendStatus } = require('../lib/constants');
+import{ updateScore } from '../services/ScoreCalculator';
 
 module.exports.logIn = async (req, res, next) => {
   try {
@@ -96,6 +98,20 @@ module.exports.getUserChallenges = async (req, res, next) => {
   }
 };
 
+module.exports.getUserActivities = async (req, res, next) => {
+  try {
+
+    const userId = req.params.id;
+
+    const activities = await getUserActivities(userId);
+
+    res.status(200).send({ message: activities });
+  } catch (e) {
+    console.error('getUserActivities request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
 // TODO move to friedships.js
 module.exports.createPendingFriendship = async (req, res, next) => {
   try {
@@ -136,10 +152,36 @@ module.exports.getChallengeParticipants = async (req, res, next) => {
 
     const challengeId = req.params.id;
 
-    const challenge = await getChallengeParticipants(challengeId);
-    res.status(200).send({ message: challenge.participants });
+    const { participants } = await getChallengeDetails(challengeId);
+    res.status(200).send({ message: participants });
   } catch (e) {
     console.error('getChallengeParticipants request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.getChallengeScorecards = async (req, res, next) => {
+  try {
+
+    const challengeId = req.params.id;
+
+    const { scorecards } = await getChallengeDetails(challengeId);
+    res.status(200).send({ message: scorecards });
+  } catch (e) {
+    console.error('getChallengeScorecards request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.getChallengeActivities = async (req, res, next) => {
+  try {
+
+    const challengeId = req.params.id;
+
+    const { activities } = await getChallengeDetails(challengeId);
+    res.status(200).send({ message: activities });
+  } catch (e) {
+    console.error('getChallengeActivities request error: ', e);
     res.status(500).send({ error: e.message });
   }
 };
@@ -156,6 +198,20 @@ module.exports.createChallenge = async (req, res, next) => {
       challenge.participants = scorecardsDb.map(scorecard => scorecard.userId);
     }
     res.status(200).send({ message: challenge });
+  } catch (e) {
+    console.error('createChallenge request error: ', e);
+    res.status(500).send({ error: e.message });
+  }
+};
+
+module.exports.createActivity = async (req, res, next) => {
+  try {
+    const activityBody = req.body;
+    console.log('activityBody', activityBody);
+    const activity = await db.Activity.createActivity(activityBody);
+    await updateScore(activity);
+
+    res.status(200).send({ message: activity });
   } catch (e) {
     console.error('createChallenge request error: ', e);
     res.status(500).send({ error: e.message });

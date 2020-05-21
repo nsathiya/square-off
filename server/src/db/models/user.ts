@@ -40,7 +40,7 @@ export function initUser(sequelize: Sequelize.Sequelize) {
   };
   const User = sequelize.define<UserInstance, UserAttributes>('User', attributes);
   User.associate = (models) => {
-    // User.belongsToMany(models.User, { through: models.Friendship, as: 'Friends' });
+    User.hasMany(models.Activity, { foreignKey: 'userId' });
   };
   // CRUD operations for this model
 

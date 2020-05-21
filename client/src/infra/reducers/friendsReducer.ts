@@ -4,7 +4,7 @@ import { UserState } from './userReducer';
 
 export type FriendsState = { [key: string]: UserState };
 
-const initialState: FriendsState = {}
+const initialState: FriendsState = {};
 
 export function friendsReducer(
   state: FriendsState = initialState,
@@ -13,7 +13,7 @@ export function friendsReducer(
   switch (action.type) {
     case ActionTypeKeys.ADD_FRIEND:
       const { friend } = action.payload;
-      return Object.assign({}, state, { [friend.id]: friend });
+      return Object.assign({}, state, { [friend!.id]: friend });
     default:
       return state;
   }

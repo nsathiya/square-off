@@ -22,7 +22,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
+import TimelineIcon from '@material-ui/icons/Timeline';
+import StarIcon from '@material-ui/icons/Star';
 
 import { useHistory } from 'react-router-dom';
 // import { mainListItems, secondaryListItems } from './listItems';
@@ -134,9 +135,20 @@ export const mainListItems = (router: any) => (
       }}
     >
       <ListItemIcon>
-        <BarChartIcon />
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="Challenges" />
+    </ListItem>
+    <ListItem
+      button={true}
+      onClick={() => {
+        router.push('/activities');
+      }}
+    >
+      <ListItemIcon>
+        <TimelineIcon />
+      </ListItemIcon>
+      <ListItemText primary="Activites" />
     </ListItem>
   </div>
 );

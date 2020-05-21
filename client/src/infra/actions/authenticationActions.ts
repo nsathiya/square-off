@@ -10,10 +10,15 @@ import {
   getFriendslist as getFriendslistApi,
   createChallenge as createChallengeApi,
   getChallenges as getChallengeApi,
+  getActivities as getActivitiesApi,
+  getDetailsOfChallenge as getDetailsOfChallengeApi,
+  getActivitiesOfChallenge as getActivitiesOfChallengeApi,
+  getScorecardsOfChallenge as getScorecardsOfChallengeApi,
+  createActivity as createActivityApi,
 } from '../api';
 import IStoreState from '../store/IStoreState';
 import keys from './actionTypesKeys';
-import { Challenge } from '../types';
+import { Challenge, Scorecard, Activity } from '../types';
 
 import {
   ISignUpFailAction,
@@ -93,6 +98,7 @@ export function logIn(username: string, password: string )
     try {
       const user = await logInApi(username, password);
       dispatch(Success(keys.LOGIN_SUCCESS, { user }));
+      dispatch(Success(keys.ADD_USER, { user }));
     } catch (err) {
       dispatch(Fail(err));
     }
@@ -106,7 +112,9 @@ export function getAllUsers(): (dispatch: Dispatch) => Promise<void> {
 
     try {
       const users = await getAllUsersApi();
-      dispatch(Success(keys.ALL_USERS, { users }));
+      users.forEach((userObj: any) => {
+        dispatch(Success(keys.ADD_USER, { user: userObj }));
+      });
     } catch (err) {
       dispatch(Fail(err));
     }
@@ -155,6 +163,19 @@ export function createChallenge(challenge: Challenge): (dispatch: Dispatch) => P
   };
 }
 
+export function createActivity(activity: Activity): (dispatch: Dispatch) => Promise<void> {
+  return async (dispatch: Dispatch) => {
+    dispatch(InProgress());
+
+    try {
+      const newActivity = await createActivityApi(activity);
+      dispatch(Success(keys.ADD_ACTIVITY, { activity: newActivity }));
+    } catch (err) {
+      dispatch(Fail(err));
+    }
+  };
+}
+
 export function getChallenges(userId: string): (dispatch: Dispatch) => Promise<void> {
   return async (dispatch: Dispatch) => {
     dispatch(InProgress());
@@ -164,6 +185,83 @@ export function getChallenges(userId: string): (dispatch: Dispatch) => Promise<v
       challenges.forEach((challenge: Challenge) => {
         dispatch(Success(keys.ADD_CHALLENGE, { challenge }));
       });
+    } catch (err) {
+      dispatch(Fail(err));
+    }
+  };
+}
+
+export function getActivities(userId: string): (dispatch: Dispatch) => Promise<void> {
+  return async (dispatch: Dispatch) => {
+    dispatch(InProgress());
+    try {
+      const activities = await getActivitiesApi(userId);
+      activities.forEach((activity: Activity) => {
+        dispatch(Success(keys.ADD_ACTIVITY, { activity }));
+      });
+      const activityIds = activities.map(activity => activity.id);
+      dispatch(Success(keys.EDIT_USER, {
+        userId,
+        key: 'activities',
+        value: activityIds,
+      }));
+    } catch (err) {
+      dispatch(Fail(err));
+    }
+  };
+}
+
+export function getDetailsOfChallenge(challengeId: string): (dispatch: Dispatch) => Promise<void> {
+  return async (dispatch: Dispatch) => {
+    dispatch(InProgress());
+
+    try {
+      const challenge = await getDetailsOfChallengeApi(challengeId);
+      dispatch(Success(keys.ADD_CHALLENGE, { challenge }));
+    } catch (err) {
+      dispatch(Fail(err));
+    }
+  };
+}
+
+export function getActivitiesOfChallenge(challengeId: string): (dispatch: Dispatch) => Promise<void> {
+  return async (dispatch: Dispatch) => {
+    dispatch(InProgress());
+
+    try {
+      const activities = await getActivitiesOfChallengeApi(challengeId);
+      activities.forEach((activity: Activity) => {
+        dispatch(Success(keys.ADD_ACTIVITY, { activity }));
+      });
+      const activityIds = activities.map(activity => activity.id);
+      console.log('activ8tes', activities);
+      console.log('activityIds', activityIds);
+      dispatch(Success(keys.EDIT_CHALLENGE, {
+        challengeId,
+        key: 'activities',
+        value: activityIds,
+      }));
+    } catch (err) {
+      dispatch(Fail(err));
+    }
+  };
+}
+
+export function getScorecardsOfChallenge(challengeId: string): (dispatch: Dispatch) => Promise<void> {
+  return async (dispatch: Dispatch) => {
+    dispatch(InProgress());
+
+    try {
+      const scorecards = await getScorecardsOfChallengeApi(challengeId);
+      scorecards.forEach((scorecard: Scorecard) => {
+        dispatch(Success(keys.ADD_SCORECARD, { scorecard }));
+      });
+      const scorecardsIds = scorecards.map(scorecard => scorecard.id);
+      dispatch(Success(keys.EDIT_CHALLENGE, {
+        challengeId,
+        key: 'scorecards',
+        value: scorecardsIds
+      }));
     } catch (err) {
       dispatch(Fail(err));
     }

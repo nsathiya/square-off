@@ -42,6 +42,8 @@
     "build": "rm -rf dist && tsc",
     "watch": "rm -rf dist && tsc && tsc -w",
     "serve": "NODE_ENV=development nodemon dist/index.js",
+    "deploy-staging": "npm install && export NODE_ENV=staging && npm run build",
+    "prestart": "npx sequelize db:migrate",
     "test": "NODE_ENV=test mocha -r ts-node/register 'src/**/*.spec.ts'",
     "pretest": "NODE_ENV=test npx sequelize db:migrate:undo:all && NODE_ENV=test npx sequelize db:migrate",
     "tslint": "tslint -c tslint.json -p tsconfig.json",

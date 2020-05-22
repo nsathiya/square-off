@@ -7,6 +7,14 @@ module.exports = {
     "dialect": "postgres",
     "operatorsAliases": false
   },
+  "staging": {
+    "username": "naren",
+    "password": "ySYbU5KMxK7IYfSMwIinuOyeQM2Lg7UR",
+    "database": "square_off",
+    "host": "dpg-br3k5u0iq56bvnfu4mc0",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
   "test": {
     "username": "naren",
     "password": null,

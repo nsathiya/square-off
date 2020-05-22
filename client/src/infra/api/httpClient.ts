@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 const baseURL = process.env.NODE_ENV === 'production'
-? 'https://square-off-backend.onrender.com'
+? 'https://square-off.onrender.com'
 : 'http://localhost:9000';
 
 const axiosInstance = axios.create({

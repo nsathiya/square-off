@@ -41,7 +41,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "watch": "rm -rf dist && tsc && tsc -w",
-    "serve": "NODE_ENV=development nodemon dist/index.js",
+    "serve": "nodemon dist/index.js",
     "deploy-staging": "npm install && npm run build",
     "prestart": "npx sequelize db:migrate",
     "test": "NODE_ENV=test mocha -r ts-node/register 'src/**/*.spec.ts'",

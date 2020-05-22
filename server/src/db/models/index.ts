@@ -7,7 +7,7 @@ import { initActivity } from './activity';
 import { initActivityIndicator } from './activityIndicator';
 
 const env = process.env.NODE_ENV || 'development';
-console.log('NODE_END', process.env.NODE_ENV);
+console.log('NODE_END', process.env);
 const config = require(__dirname + '/../config.js')[env];
 
 console.log('Using config', config);

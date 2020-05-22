@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { BASE_URL } from '../config';
 
-const baseURL = BASE_URL || 'http://localhost:9000';
+const baseURL = process.env.BASE_URL || 'http://localhost:9000';
 const axiosInstance = axios.create({
   baseURL: baseURL + '/api'
 });

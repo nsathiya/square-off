@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 
-const baseURL = process.env.BASE_URL || 'http://localhost:9000';
+const baseURL = process.env.NODE_ENV === 'production'
+? 'https://square-off.onrender.com'
+: 'http://localhost:9000';
+
 const axiosInstance = axios.create({
   baseURL: baseURL + '/api'
 });

@@ -9,6 +9,7 @@ import { initActivityIndicator } from './activityIndicator';
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config.js')[env];
 
+console.log('Using config', config);
 
 const sequelize = new Sequelize(
   config.database,

@@ -1,7 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
+import { BASE_URL } from '../config';
 
+const baseURL = BASE_URL || 'http://localhost:9000';
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:9000/api'
+  baseURL: baseURL + '/api'
 });
 
 export async function post(path: string, body: {}): Promise<any> {

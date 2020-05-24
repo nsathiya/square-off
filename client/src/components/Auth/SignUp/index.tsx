@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
@@ -9,14 +10,16 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { SignUpForm } from './SignUpForm';
-import SquareForm from '../SquareForm';
-import { signUp as signUpAction } from '../../infra/actions/authenticationActions';
-import { IStoreState } from '../../infra/store';
-import { UserState } from '../../infra/reducers/userReducer';
+import SquareForm from '../../SquareForm';
+import { signUp as signUpAction } from '../../../infra/actions/authenticationActions';
+import { IStoreState } from '../../../infra/store';
+import { UserState } from '../../../infra/reducers/userReducer';
 // import { login, logout } from '../infra/store/users';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../../App/index';
+import * as firebase from 'firebase';
 
 function Copyright() {
   return (
@@ -67,17 +70,36 @@ interface SignUpProps {
 
 function SignUp(props: SignUpProps) {
   const classes = useStyles();
-  const onSubmit = (values: {}) => {
+  const Auth = useContext(AuthContext);
+  const [errors, setErrors] = useState(null);
+
+  const onSubmit = (values: { username: string, email: string, password: string}) => {
     // first_name: user.firstName,
     // last_name: user.lastName,
-    // user_id: user.userId,
+    // username: user.username,
     // email: user.email,
     // phone_number: user.phoneNumber,
-    props.signUp(values);
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(values.email, values.password)
+      .then(response => {
+        if (!response.user) {
+          // TODO alert
+          return;
+        }
+        // hack for now. We keep track of user based on username, as username is unique.
+        response.user.updateProfile({ displayName: values.username });
+        Auth.setLoggedIn(true);
+        props.signUp(values);
+      })
+      .catch(e => {
+        setErrors(e.message);
+      });
+
   };
-  if (props.user.isAuthenticated) {
+  if (Auth.isLoggedIn) {
     const history = useHistory();
-    history.push('/friends-list');
+    history.push('/');
   }
 
   return (
@@ -96,6 +118,13 @@ function SignUp(props: SignUpProps) {
             <Typography component="h1" variant="h5">
               Create an Account
             </Typography>
+            {
+              errors
+              &&
+              <Typography variant="body2" color="error">
+                {errors}
+              </Typography>
+            }
             <SquareForm onSubmit={onSubmit}>
               <SignUpForm />
             </SquareForm>

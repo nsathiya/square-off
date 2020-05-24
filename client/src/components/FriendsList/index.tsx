@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
+import Avatar from '@material-ui/core/Avatar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -19,6 +20,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems } from '../Main/withMain';
 import { useHistory } from 'react-router-dom';
+import * as firebase from 'firebase';
 
 import AddFriend from './AddFriends';
 import FriendsList from './FriendsList';
@@ -124,7 +126,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
   const history = useHistory();
-
   const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -132,6 +133,8 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  // TODO handle error
+  const logOut = () => firebase.auth().signOut();
 
   return (
     <div className={classes.root}>
@@ -150,9 +153,9 @@ export default function Dashboard() {
           <Typography component="h1" variant="h6" noWrap={true} className={classes.title}>
             SQUARE OFF
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon style={{ color: '#674EFF' }} />
+          <IconButton color="inherit" onClick={logOut}>
+            <Badge color="secondary">
+              <Avatar style={{ color: '#674EFF', backgroundColor: 'transparent' }} />
             </Badge>
           </IconButton>
         </Toolbar>

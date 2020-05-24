@@ -94,7 +94,6 @@ export function logIn(username: string, password: string )
   return async (dispatch: Dispatch) => {
     // Signal work in progress.
     dispatch(InProgress());
-
     try {
       const user = await logInApi(username, password);
       dispatch(Success(keys.LOGIN_SUCCESS, { user }));

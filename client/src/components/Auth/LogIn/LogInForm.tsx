@@ -27,12 +27,12 @@ export const LogInForm = (props: any) => {
         margin="normal"
         required={true}
         fullWidth={true}
-        id="username"
-        label="Username"
-        name="username"
+        id="email"
+        label="Email"
+        name="email"
         autoFocus={true}
         onChange={props.handleChange}
-        value={props.state.values.username}
+        value={props.state.values.email}
       />
       <TextField
         variant="outlined"
@@ -66,7 +66,7 @@ export const LogInForm = (props: any) => {
           </Link>
         </Grid>
         <Grid item={true}>
-          <Link href="#" variant="body2">
+          <Link href="/sign-up" variant="body2">
             {`Don't have an account? Sign Up`}
           </Link>
         </Grid>

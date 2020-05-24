@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import { Component, ComponentClass, ComponentType } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
+import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -26,6 +26,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import StarIcon from '@material-ui/icons/Star';
 
 import { useHistory } from 'react-router-dom';
+import * as firebase from 'firebase';
 // import { mainListItems, secondaryListItems } from './listItems';
 
 function Copyright() {
@@ -151,6 +152,7 @@ export const mainListItems = (router: any) => (
       <ListItemText primary="Activites" />
     </ListItem>
   </div>
+
 );
 
 export function withMain<T> (WrappedComponent: React.ComponentType<any>) {
@@ -164,7 +166,11 @@ export function withMain<T> (WrappedComponent: React.ComponentType<any>) {
     const handleDrawerClose = () => {
       setOpen(false);
     };
-    console.log('WrappedComponent', WrappedComponent);
+    const logOut = () => {
+      // TODO handle error
+      firebase.auth().signOut();
+    };
+
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -182,9 +188,9 @@ export function withMain<T> (WrappedComponent: React.ComponentType<any>) {
             <Typography component="h1" variant="h6" noWrap={true} className={classes.title}>
               SQUARE OFF
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon style={{ color: '#674EFF' }} />
+            <IconButton color="inherit" onClick={logOut}>
+              <Badge color="secondary">
+                <Avatar style={{ color: '#674EFF', backgroundColor: 'transparent' }} />
               </Badge>
             </IconButton>
           </Toolbar>

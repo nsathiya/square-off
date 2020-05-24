@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useContext, useState } from 'react';
+import * as firebase from 'firebase';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,12 +13,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import SquareForm from '../SquareForm';
+import SquareForm from '../../SquareForm';
 import { LogInForm } from './LogInForm';
-import { logIn as logInAction } from '../../infra/actions/authenticationActions';
-import { IStoreState } from '../../infra/store';
-import { UserState } from '../../infra/reducers/userReducer';
-// import { login, logout } from '../infra/store/users';
+import { logIn as logInAction } from '../../../infra/actions/authenticationActions';
+import { IStoreState } from '../../../infra/store';
+import { UserState } from '../../../infra/reducers/userReducer';
+import { AuthContext } from '../../App/index';
+
 import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
@@ -71,13 +74,34 @@ type Props = StateProps & DispatchProps & OwnProps;
 
 function LogIn(props: Props) {
   const classes = useStyles();
-  const onSubmit = (values: { username: string, password: string }) => {
-    props.logIn(values.username, values.password);
+  const Auth = useContext(AuthContext);
+  const [errors, setErrors] = useState(null);
+  const onSubmit = (values: { email: string, password: string }) => {
+    // TODO async await
+    firebase
+    .auth()
+    .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .then(() => {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(values.email, values.password)
+        .then(response => {
+          if (response.user) {
+            Auth.setLoggedIn(true);
+            // Hack for now
+            const username = response.user.displayName!;
+            props.logIn(username, values.password);
+          }
+        })
+        .catch(e => {
+          setErrors(e.message);
+        });
+      });
   };
 
-  if (props.user.isAuthenticated) {
-  const history = useHistory();
-  history.push('/friends');
+  if (Auth.isLoggedIn) {
+    const history = useHistory();
+    history.push('/');
   }
 
   return (
@@ -90,6 +114,13 @@ function LogIn(props: Props) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        {
+          errors
+          &&
+          <Typography variant="body2" color="error">
+            {errors}
+          </Typography>
+        }
         <SquareForm onSubmit={onSubmit}>
           <LogInForm />
         </SquareForm>

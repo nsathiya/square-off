@@ -21,8 +21,8 @@ export function userReducer(
   switch (action.type) {
     case ActionTypeKeys.SIGNUP_SUCCESS:
     case ActionTypeKeys.LOGIN_SUCCESS:
-      const user = action.payload.user;
-      return {
+      const { user } = action.payload;
+      return Object.assign({}, state, {
         id: user.id,
         username: user.username,
         firstName: user.first_name,
@@ -30,7 +30,7 @@ export function userReducer(
         email: user.email,
         phoneNumber: user.phone_number,
         isAuthenticated: true,
-      };
+      });
     case ActionTypeKeys.LOGOUT_SUCCESS:
       return initialState;
     default:

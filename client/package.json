@@ -25,6 +25,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
     "axios": "^0.19.2",
+    "firebase": "^7.14.5",
     "hoist-non-react-statics": "^3.3.2",
     "material-ui-search-bar": "^1.0.0-beta.14",
     "react": "^16.8.0",

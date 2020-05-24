@@ -61,8 +61,7 @@ class FriendsList extends React.Component<Props, FriendsListState> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -76,6 +75,14 @@ class FriendsList extends React.Component<Props, FriendsListState> {
     // just a reference check is enough
     if (this.props.friends !== prevProps.friends) {
       this.renderFriends();
+    }
+    const { user: thisUser, getAllFriends } = this.props;
+    const { user: prevUser } = prevProps;
+
+    if (thisUser &&
+        thisUser.id &&
+        thisUser.id !== prevUser!.id) {
+      getAllFriends(thisUser.id);
     }
   }
 

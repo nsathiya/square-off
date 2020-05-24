@@ -79,7 +79,6 @@ const ChallengeSummary = ({friends, challenge, user }: Props) => {
 };
 
 function mapStateToProps (state: IStoreState, ownProps: OwnProps): StateProps {
-  console.log('challenges', state.challenges);
   const challengeId: string = ownProps.challengeId;
   const challenge = state.challenges[challengeId];
   return {

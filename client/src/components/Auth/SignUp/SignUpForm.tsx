@@ -97,7 +97,7 @@ export const SignUpForm = (props: any) => {
       </Button>
       <Grid container={true} justify="flex-end">
         <Grid item={true}>
-          <Link href="#" variant="body2">
+          <Link href="/log-in" variant="body2">
             Already have an account? Sign in
           </Link>
         </Grid>

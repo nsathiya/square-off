@@ -1,12 +1,16 @@
 import * as React from 'react';
 
-export default class SquareForm extends React.Component<{ onSubmit: (values: {}) => void; }, { values: {} }> {
+type valuesType = { [id: string]: {} };
+
+export default class SquareForm extends React.Component<{
+  onSubmit: (values: {}) => void;
+  fieldNames: any;
+}, { values: {} }> {
   constructor(props: any) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
     this.state = {
       values: {},
     };
@@ -30,11 +34,16 @@ export default class SquareForm extends React.Component<{ onSubmit: (values: {})
     }));
   }
 
-  handleSubmit(event: React.FormEvent<EventTarget>) {
+  handleSubmit(event: any) {
     event.preventDefault();
-    // add validation here
-    // set `isSubmitting` to true here as well
-    this.props.onSubmit(this.state.values);
+    // Get default value if already set
+    const formData = {} as any;
+    this.props.fieldNames.forEach((field: string) => {
+      const htmlField = document.getElementById(field) as any;
+      const changedValue = (this.state.values as valuesType)[field];
+      formData[field] = changedValue || htmlField.value;
+    });
+    this.props.onSubmit(formData);
   }
 
   render() {

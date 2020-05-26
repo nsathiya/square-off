@@ -125,7 +125,10 @@ function SignUp(props: SignUpProps) {
                 {errors}
               </Typography>
             }
-            <SquareForm onSubmit={onSubmit}>
+            <SquareForm
+              fieldNames={['firstName', 'lastName', 'username', 'email', 'password']}
+              onSubmit={onSubmit}
+            >
               <SignUpForm />
             </SquareForm>
           </Box>

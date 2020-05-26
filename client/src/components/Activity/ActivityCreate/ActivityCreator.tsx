@@ -56,7 +56,10 @@ const ActivityCreator = ({ user, createActivity }: Props) => {
         </Grid>
         <Grid container={true} direction={'row'} justify={'center'} >
           <Grid item={true} sm={6}>
-            <SquareForm onSubmit={createActivityOnSubmit}>
+            <SquareForm
+              fieldNames={['name', 'caloriesBurned', 'distance', 'time', 'startTime']}
+              onSubmit={createActivityOnSubmit}
+            >
               <ActivityForm exercise={exercise} />
             </SquareForm>
           </Grid>

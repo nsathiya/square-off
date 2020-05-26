@@ -100,7 +100,10 @@ const ChallengeCreator = ({ user, createChallenge, friends, challenges }: Props)
       case CreationActions.CHALLENGE_DETAILS:
         view = (
           <Grid>
-            <SquareForm onSubmit={onChallengeDetailSubmit}>
+            <SquareForm
+              fieldNames={['name', 'metric', 'startTime', 'endTime']}
+              onSubmit={onChallengeDetailSubmit}
+            >
               <ChallengeForm exercise={exercise} />
             </SquareForm>
           </Grid>
@@ -109,7 +112,10 @@ const ChallengeCreator = ({ user, createChallenge, friends, challenges }: Props)
       case CreationActions.SELECT_FRIENDS:
         view = (
           <Grid>
-            <SquareForm onSubmit={createChallengeOnSubmit}>
+            <SquareForm
+              fieldNames={['participants']}
+              onSubmit={createChallengeOnSubmit}
+            >
               <SelectParticipants friends={friends} />
             </SquareForm>
           </Grid>

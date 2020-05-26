@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import * as moment from 'moment';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
@@ -42,6 +42,8 @@ export default function ChallengeForm (props: any) {
   const classes = useStyles();
   const exercise: Exercise = props.exercise;
   const metricsForExercise = MetricsForExercise[exercise];
+  const defaultStartTime = moment().format('YYYY-MM-DD[T]HH:mm');
+  const defaultEndTime = moment().add(5, 'days').format('YYYY-MM-DD[T]HH:mm');
   return (
     <form className={classes.form} noValidate={true} onSubmit={props.handleSubmit}>
       <TextField
@@ -75,7 +77,7 @@ export default function ChallengeForm (props: any) {
         >
         {
           metricsForExercise.map((metric: ExerciseMetric) => (
-            <option value={metric}>{metric}</option>
+            <option key={metric} value={metric}>{metric}</option>
           ))
         }
         </Select>
@@ -89,7 +91,7 @@ export default function ChallengeForm (props: any) {
         margin="normal"
         required={true}
         fullWidth={true}
-        defaultValue="2017-05-24T10:30"
+        defaultValue={defaultStartTime}
         InputLabelProps={{
           shrink: true,
         }}
@@ -105,7 +107,7 @@ export default function ChallengeForm (props: any) {
         margin="normal"
         required={true}
         fullWidth={true}
-        defaultValue="2017-05-18T10:30"
+        defaultValue={defaultEndTime}
         InputLabelProps={{
           shrink: true,
         }}

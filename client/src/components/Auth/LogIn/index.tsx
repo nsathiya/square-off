@@ -121,7 +121,10 @@ function LogIn(props: Props) {
             {errors}
           </Typography>
         }
-        <SquareForm onSubmit={onSubmit}>
+        <SquareForm
+          fieldNames={['email', 'password']}
+          onSubmit={onSubmit}
+        >
           <LogInForm />
         </SquareForm>
       </div>

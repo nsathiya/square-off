@@ -42,7 +42,8 @@ export default class SquareForm extends React.Component<{
       const htmlField = document.getElementById(field) as any;
       const changedValue = (this.state.values as valuesType)[field];
       formData[field] = changedValue
-                        || (htmlField && htmlField.value);
+                        || (htmlField && htmlField.value)
+                        || undefined;
     });
     this.props.onSubmit(formData);
   }

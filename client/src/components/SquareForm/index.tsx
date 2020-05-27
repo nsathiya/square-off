@@ -23,9 +23,7 @@ export default class SquareForm extends React.Component<{
       nameToSave = name;
     } else {
       const target = event.currentTarget;
-      console.log('event', event);
-      console.log('event', event.type);
-      valueToSave = event.type === 'number' ? parseInt(target.value, 10) : target.value;
+      valueToSave = target.type === 'number' ? parseInt(target.value, 10) : target.value;
       nameToSave = target.name;
     }
     this.setState(prevState => ({

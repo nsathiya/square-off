@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import * as moment from 'moment';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
@@ -51,7 +51,7 @@ export default function ActivityForm (props: any) {
   }
 
   const distanceApplicable = ExercisesWithDistance.includes(props.exercise);
-
+  const defaultStartTime = moment().format('YYYY-MM-DD[T]HH:mm');
   return (
     <form className={classes.form} noValidate={true} onSubmit={props.handleSubmit}>
       <TextField
@@ -59,7 +59,7 @@ export default function ActivityForm (props: any) {
         margin="normal"
         required={true}
         fullWidth={true}
-        id="activityName"
+        id="name"
         label="Activity Name"
         name="name"
         autoFocus={true}
@@ -71,7 +71,7 @@ export default function ActivityForm (props: any) {
         margin="normal"
         required={true}
         fullWidth={true}
-        id="calories"
+        id="caloriesBurned"
         label="Calories Burned"
         name="caloriesBurned"
         onChange={props.handleChange}
@@ -98,7 +98,7 @@ export default function ActivityForm (props: any) {
         />
       }
       <TextField
-        id="duration"
+        id="time"
         name="time"
         label="Duration (in minutes)"
         type="number"
@@ -106,7 +106,7 @@ export default function ActivityForm (props: any) {
         margin="normal"
         required={true}
         fullWidth={true}
-        defaultValue="25"
+        defaultValue={25}
         InputLabelProps={{
           shrink: true,
         }}
@@ -122,7 +122,7 @@ export default function ActivityForm (props: any) {
         margin="normal"
         required={true}
         fullWidth={true}
-        defaultValue="2017-05-24T10:30"
+        defaultValue={defaultStartTime}
         InputLabelProps={{
           shrink: true,
         }}

@@ -19,7 +19,8 @@ import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-
+      margin: 8,
+      flexGrow: 1,
     },
     title: {
       color: '#674EFF',

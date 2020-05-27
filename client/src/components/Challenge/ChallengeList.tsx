@@ -18,8 +18,10 @@ import { FriendsState } from '../../infra/reducers/friendsReducer';
 import { ChallengesState } from '../../infra/reducers/challengesReducer';
 import { Challenge, ChallengeStatus } from '../../infra/types';
 import { IStoreState } from '../../infra/store';
-
-import { getChallenges as getChallengesApi } from '../../infra/actions/authenticationActions';
+import {
+  getChallenges as getChallengesApi,
+  getFriends as getFriendsApi,
+} from '../../infra/actions/authenticationActions';
 import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
@@ -59,6 +61,7 @@ type StateProps = {
 
 type DispatchProps = {
   getChallenges: (userId: string) => (dispatch: Dispatch<any>) => Promise<void>;
+  getFriends: (userId: string) => (dispatch: Dispatch<any>) => Promise<void>;
 };
 
 type OwnProps = {};
@@ -125,7 +128,7 @@ const getCompletedChallenges = (challenges: ChallengesState, friends: FriendsSta
           ));
 };
 
-const ChallengeList = ({getChallenges, friends, challenges, user }: Props) => {
+const ChallengeList = ({getChallenges, getFriends, friends, challenges, user }: Props) => {
     const classes = useStyles();
     const history = useHistory();
 
@@ -134,9 +137,10 @@ const ChallengeList = ({getChallenges, friends, challenges, user }: Props) => {
         if (user && user.id) {
           console.log('getting challenges!');
           getChallenges(user.id);
+          getFriends(user.id);
         }
       },
-      []
+      [user!.id]
     );
 
     const activeChallenges = getActiveChallenges(challenges, friends);
@@ -201,6 +205,7 @@ const ChallengeList = ({getChallenges, friends, challenges, user }: Props) => {
 };
 
 function mapStateToProps (state: IStoreState): StateProps {
+  console.log('friends', state.friends);
   console.log('challenges', state.challenges);
   return {
     user: state.user,
@@ -211,7 +216,8 @@ function mapStateToProps (state: IStoreState): StateProps {
 
 function mapDispatchToProps(dispatch: ThunkDispatch<{}, void, Action>): DispatchProps {
   return {
-    getChallenges: (userId: string): any => { dispatch(getChallengesApi(userId)); }
+    getChallenges: (userId: string): any => { dispatch(getChallengesApi(userId)); },
+    getFriends: (userId: string): any => { dispatch(getFriendsApi(userId)); },
   };
 }
 

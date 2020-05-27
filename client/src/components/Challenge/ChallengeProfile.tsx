@@ -15,6 +15,7 @@ import {
   getDetailsOfChallenge,
   getActivitiesOfChallenge,
   getScorecardsOfChallenge,
+  getFriends,
 } from '../../infra/actions/authenticationActions';
 import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
@@ -55,6 +56,7 @@ type DispatchProps = {
   getDetailsOfChallenge: (challengeId: string) => (dispatch: Dispatch<any>) => Promise<void>;
   getActivitiesOfChallenge: (challengeId: string) => (dispatch: Dispatch<any>) => Promise<void>;
   getScorecardsOfChallenge: (challengeId: string) => (dispatch: Dispatch<any>) => Promise<void>;
+  getFriends: (userId: string) => (dispatch: Dispatch<any>) => Promise<void>;
 };
 
 type OwnProps = {};
@@ -77,11 +79,22 @@ const ChallengeProfile = (props: Props) => {
       },
       []
     );
+    useEffect(
+      () => {
+        if (props.user && props.user.id) {
+          props.getFriends(props.user.id);
+        }
+      },
+      [props.user]
+    );
 
     return (
       <Grid
         container={true}
         direction={'column'}
+        style={{ margin: 4 }}
+        spacing={8}
+        xs={12}
       >
         <Grid container={true} direction={'row'} justify={'center'} >
           <ChallengeSummary challengeId={id!} />
@@ -105,6 +118,7 @@ function mapDispatchToProps(dispatch: ThunkDispatch<{}, void, Action>): Dispatch
     getDetailsOfChallenge: (id: string): any => { dispatch(getDetailsOfChallenge(id)); },
     getActivitiesOfChallenge: (id: string): any => { dispatch(getActivitiesOfChallenge(id)); },
     getScorecardsOfChallenge: (id: string): any => { dispatch(getScorecardsOfChallenge(id)); },
+    getFriends: (userId: string): any => { dispatch(getFriends(userId)); },
   };
 }
 

@@ -25,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
 
   },
+  hover: {
+    '&:hover': {
+      backgroundColor: 'rgba(103, 78, 255, 0.12)',
+      color: 'FFFFFF'
+    }
+  },
   root: {
     display: 'flex',
     flexGrow: 1,
@@ -32,11 +38,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     // overflow: 'hidden',
     backgroundColor: 'transparent',
+    marginRight: 32,
+    marginLeft: 32,
   },
   gridList: {
     display: 'flex',
     flexGrow: 1,
-    height: 450,
     marginRight: 8,
     marginLeft: 8,
   },
@@ -44,11 +51,11 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
     borderRadius: 16,
-    width: 240,
+    // width: 240,
   },
   gridListTileBar: {
     color: '#674EFF',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: 'transparent',
   }
 }));
 
@@ -80,8 +87,11 @@ const SelectExercise = ({ setExercise, nextAction }: Props) => {
         >
           <ButtonBase
             style={{
-              width: 240,
+              width: '100%',
               height: '100%',
+            }}
+            classes={{
+              root: classes.hover
             }}
             onClick={() => {
               setExercise(exercise);
@@ -94,7 +104,6 @@ const SelectExercise = ({ setExercise, nextAction }: Props) => {
               }}
               className={classes.gridListTileBar}
               title={exercise}
-              subtitle={<span>{'test'}</span>}
             />
           </ButtonBase>
         </GridListTile>
@@ -105,7 +114,7 @@ const SelectExercise = ({ setExercise, nextAction }: Props) => {
         <GridList
           cellHeight={120}
           cols={3}
-          spacing={16}
+          spacing={32}
           className={classes.gridList}
         >
           <GridListTile key="Select Exercise" cols={3} style={{ height: 'auto' }}>

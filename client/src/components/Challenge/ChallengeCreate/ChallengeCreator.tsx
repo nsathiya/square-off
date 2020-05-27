@@ -126,7 +126,7 @@ const ChallengeCreator = ({ user, createChallenge, friends, challenges }: Props)
     }
     return (
       <Grid container={true} spacing={3}>
-        <Grid item={true}>
+        <Grid container={true} direction={'row'} justify={'center'} >
           {view}
         </Grid>
       </Grid>

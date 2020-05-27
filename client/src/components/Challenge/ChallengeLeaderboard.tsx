@@ -27,7 +27,8 @@ import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-
+      margin: 8,
+      flexGrow: 1,
     },
     table: {
 
@@ -90,7 +91,7 @@ const ChallengeLeaderboard = ({friends, challenge, scorecards, user }: Props) =>
                 {scorecardsToRender.map((scorecard: any, idx: number) => (
                   <TableRow key={idx}>
                     <TableCell component="th" scope="row">
-                      {idx}
+                      {idx + 1}
                     </TableCell>
                     <TableCell align="right">{scorecard.name}</TableCell>
                     <TableCell align="right">{scorecard.score}</TableCell>

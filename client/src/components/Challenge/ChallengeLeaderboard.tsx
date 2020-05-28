@@ -14,7 +14,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import { UserState } from '../../infra/reducers/userReducer';
-import { FriendsState } from '../../infra/reducers/friendsReducer';
+import { UsersState } from '../../infra/reducers/usersReducer';
 import { ChallengesState } from '../../infra/reducers/challengesReducer';
 import { ScorecardsState } from '../../infra/reducers/scorecardsReducer';
 import { Challenge, ChallengeStatus } from '../../infra/types';
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 type StateProps = {
   readonly user?: UserState;
-  readonly friends: FriendsState;
+  readonly users: UsersState;
   readonly challenge: Challenge;
   readonly scorecards: ScorecardsState;
 };
@@ -53,7 +53,7 @@ type OwnProps = {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const ChallengeLeaderboard = ({friends, challenge, scorecards, user }: Props) => {
+const ChallengeLeaderboard = ({users, challenge, scorecards, user }: Props) => {
     const classes = useStyles();
     if (!challenge) {
       return (
@@ -65,10 +65,11 @@ const ChallengeLeaderboard = ({friends, challenge, scorecards, user }: Props) =>
     if (challenge.scorecards) {
       scorecardsToRender = challenge.scorecards!.map(scorecardId => {
         const score = scorecards[scorecardId].score;
-        const userName = friends[scorecards[scorecardId].userId] || {};
+        const userName = users[scorecards[scorecardId].userId] || {};
         const name = `${userName!.firstName} ${userName!.lastName}`;
         return { name, score };
       });
+      scorecardsToRender.sort((a: {score: number}, b: {score: number}) => (b.score - a.score));
     }
     return (
       <Card className={classes.root}>
@@ -110,7 +111,7 @@ function mapStateToProps (state: IStoreState, ownProps: OwnProps): StateProps {
   const challenge = state.challenges[challengeId];
   return {
     user: state.user,
-    friends: state.friends,
+    users: state.users,
     challenge,
     scorecards: state.scorecards,
   };

@@ -74,6 +74,7 @@ export default function ActivityForm (props: any) {
         id="caloriesBurned"
         label="Calories Burned"
         name="caloriesBurned"
+        type="number"
         onChange={props.handleChange}
         value={props.state.values.caloriesBurned}
       />

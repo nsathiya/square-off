@@ -23,7 +23,7 @@ export interface ILogInFailAction {
 export interface ISignUpSuccessAction {
   readonly type: keys.SIGNUP_SUCCESS;
   readonly payload: {
-    readonly user: {};
+    readonly user: any;
   };
 }
 
@@ -44,7 +44,7 @@ export interface SuccessAction {
     readonly activity?: Activity;
     readonly challenge?: Challenge;
     readonly scorecard?: Scorecard;
-    readonly friend?: UserState; // TODO Clean to User
+    readonly user?: UserState; // TODO Clean to User
   };
 }
 

@@ -13,6 +13,7 @@ import { FriendsState } from '../../../infra/reducers/friendsReducer';
 import { ChallengesState } from '../../../infra/reducers/challengesReducer';
 import { Challenge } from '../../../infra/types';
 import { IStoreState } from '../../../infra/store';
+import { extractFriends } from '../../../infra/store/extractors';
 
 import { createChallenge as createChallengeApi } from '../../../infra/actions/authenticationActions';
 import { connect } from 'react-redux';
@@ -136,7 +137,7 @@ const ChallengeCreator = ({ user, createChallenge, friends, challenges }: Props)
 function mapStateToProps (state: IStoreState): StateProps {
   return {
     user: state.user,
-    friends: state.friends,
+    friends: extractFriends(state),
     challenges: state.challenges,
   };
 }

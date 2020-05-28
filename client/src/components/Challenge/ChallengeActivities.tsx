@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 type StateProps = {
   readonly user?: UserState;
-  readonly friends: FriendsState;
+  readonly users: FriendsState;
   readonly challenge: Challenge;
   readonly activities: ActivitiesState;
 };
@@ -52,7 +52,7 @@ type OwnProps = {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-const ChallengeActivities = ({friends, challenge, activities, user }: Props) => {
+const ChallengeActivities = ({users, challenge, activities, user }: Props) => {
     const classes = useStyles();
     if (!challenge) {
       return (
@@ -69,19 +69,22 @@ const ChallengeActivities = ({friends, challenge, activities, user }: Props) => 
     if (challenge.activities) {
       activitiesToRender = challenge.activities!.map(activityId => {
         const activity = activities[activityId];
-        let exercise, name, startTime, distance, time = '';
+        let exercise, userName, name, startTime, distance, time = '';
         let caloriesBurned;
         if (activity) {
-          const userName = friends[activity.userId] || {};
-          name = `${userName!.firstName} ${userName!.lastName}`;
+          const userInfo = users[activity.userId] || {};
+          userName = `${userInfo!.firstName} ${userInfo!.lastName}`;
+          name = activity.name;
           exercise = activity.exercise;
           startTime = activity.startTime;
-          distance = `${activity.distance} ${activity.distanceMetric}`;
-          time = `${activity.time} secs`;
+          distance = activity.distance
+            ? `${activity.distance} ${activity.distanceMetric}`
+            : '-';
+          time = `${activity.time} mins`;
           caloriesBurned = activity.caloriesBurned;
         }
 
-        return { name, exercise, startTime, distance, time, caloriesBurned };
+        return { userName, name, exercise, startTime, distance, time, caloriesBurned };
       });
     }
     return (
@@ -96,7 +99,8 @@ const ChallengeActivities = ({friends, challenge, activities, user }: Props) => 
             <Table className={classes.table} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Name</TableCell>
+                  <TableCell>User</TableCell>
+                  <TableCell align="right">Name</TableCell>
                   <TableCell align="right">Exercise</TableCell>
                   <TableCell align="right">Started At</TableCell>
                   <TableCell align="right">Distance</TableCell>
@@ -107,11 +111,12 @@ const ChallengeActivities = ({friends, challenge, activities, user }: Props) => 
               <TableBody>
                 {activitiesToRender.map((activity: any, idx: number) => (
                   <TableRow key={idx}>
-                    <TableCell component="th" scope="row">{activity.name}</TableCell>
+                    <TableCell component="th" scope="row">{activity.userName}</TableCell>
+                    <TableCell align="right">{activity.name}</TableCell>
                     <TableCell align="right">{activity.exercise}</TableCell>
                     <TableCell align="right">{activity.startTime}</TableCell>
                     <TableCell align="right">{activity.distance}</TableCell>
-                    <TableCell align="right">{activity.duration}</TableCell>
+                    <TableCell align="right">{activity.time}</TableCell>
                     <TableCell align="right">{activity.caloriesBurned}</TableCell>
                   </TableRow>
                 ))}
@@ -128,7 +133,7 @@ function mapStateToProps (state: IStoreState, ownProps: OwnProps): StateProps {
   const challenge = state.challenges[challengeId];
   return {
     user: state.user,
-    friends: state.friends,
+    users: state.users,
     challenge,
     activities: state.activities,
   };

@@ -38,6 +38,11 @@ export enum DistanceMetric {
   METER = 'METER',
 }
 
+export enum UserRelationships {
+  FRIEND = 'FRIEND',
+  SELF = 'SELF',
+}
+
 export enum ChallengeStatus {
   HAVE_NOT_STARTED = 'HAVE_NOT_STARTED',
   ACTIVE = 'ACTIVE',

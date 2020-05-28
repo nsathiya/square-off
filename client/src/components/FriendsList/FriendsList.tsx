@@ -14,6 +14,7 @@ import { IStoreState } from '../../infra/store';
 import { UserState } from '../../infra/reducers/userReducer';
 import { FriendsState } from '../../infra/reducers/friendsReducer';
 import { getFriends } from '../../infra/actions/authenticationActions';
+import { extractFriends } from '../../infra/store/extractors';
 
 const useStyles = (theme: Theme) => {
   const style: StyleRules = {
@@ -147,7 +148,7 @@ class FriendsList extends React.Component<Props, FriendsListState> {
 function mapStateToProps (state: IStoreState): StateProps {
   return {
     user: state.user,
-    friends: state.friends
+    friends: extractFriends(state),
   };
 }
 

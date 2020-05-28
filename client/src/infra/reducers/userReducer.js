@@ -1,5 +1,6 @@
 import ActionTypeKeys from '../actions/actionTypesKeys';
 import ActionTypes from '../actions/actionTypes';
+import { UserRelationships } from '../types';
 
 export type UserState = {
   id: string;
@@ -10,6 +11,7 @@ export type UserState = {
   phoneNumber: string | null;
   activities: Array<string>;
   isAuthenticated: boolean;
+  relationship: UserRelationships;
 };
 
 const initialState: UserState = {};
@@ -30,6 +32,7 @@ export function userReducer(
         email: user.email,
         phoneNumber: user.phone_number,
         isAuthenticated: true,
+        relationship: user.relationship,
       });
     case ActionTypeKeys.LOGOUT_SUCCESS:
       return initialState;

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { userReducer, UserState } from '../reducers/userReducer';
 import { usersReducer, UsersState } from '../reducers/usersReducer';
-import { friendsReducer, FriendsState } from '../reducers/friendsReducer';
+// import { friendsReducer, FriendsState } from '../reducers/friendsReducer';
 import { challengesReducer, ChallengesState } from '../reducers/challengesReducer';
 import { scorecardsReducer, ScorecardsState } from '../reducers/scorecardsReducer';
 import { activitiesReducer, ActivitiesState } from '../reducers/activitiesReducer';
@@ -9,7 +9,7 @@ import { activitiesReducer, ActivitiesState } from '../reducers/activitiesReduce
 export interface IStoreState {
   readonly user: UserState;
   readonly users: UsersState;
-  readonly friends: FriendsState;
+  // readonly friends: FriendsState;
   readonly challenges: ChallengesState;
   readonly scorecards: ScorecardsState;
   readonly activities: ActivitiesState;
@@ -19,7 +19,7 @@ export interface IStoreState {
 export const rootReducer = combineReducers({
   user: userReducer,
   users: usersReducer,
-  friends: friendsReducer,
+  // friends: friendsReducer,
   challenges: challengesReducer,
   scorecards: scorecardsReducer,
   activities: activitiesReducer,

@@ -18,6 +18,7 @@ import { FriendsState } from '../../infra/reducers/friendsReducer';
 import { ChallengesState } from '../../infra/reducers/challengesReducer';
 import { Challenge, ChallengeStatus } from '../../infra/types';
 import { IStoreState } from '../../infra/store';
+import { extractFriends } from '../../infra/store/extractors';
 import {
   getChallenges as getChallengesApi,
   getFriends as getFriendsApi,
@@ -167,7 +168,7 @@ const ChallengeList = ({getChallenges, getFriends, friends, challenges, user }: 
         </ExpansionPanel>
       </Grid>
       <Grid container={true} direction={'row'} justify={'center'} >
-        <ExpansionPanel className={classes.panel} elevation={0}>
+        <ExpansionPanel className={classes.panel} elevation={0} defaultExpanded={true}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                 <Typography>Upcoming</Typography>
             </ExpansionPanelSummary>
@@ -205,11 +206,10 @@ const ChallengeList = ({getChallenges, getFriends, friends, challenges, user }: 
 };
 
 function mapStateToProps (state: IStoreState): StateProps {
-  console.log('friends', state.friends);
   console.log('challenges', state.challenges);
   return {
     user: state.user,
-    friends: state.friends,
+    friends: extractFriends(state),
     challenges: state.challenges,
   };
 }

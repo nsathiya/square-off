@@ -19,6 +19,7 @@ import { Dispatch } from 'redux';
 import { IStoreState } from '../../infra/store';
 import { UserState } from '../../infra/reducers/userReducer';
 import { UsersState } from '../../infra/reducers/usersReducer';
+import { UserRelationships } from '../../infra/types';
 import { getAllUsers, createFriend } from '../../infra/actions/authenticationActions';
 
 const useStyles = (theme: Theme) => {
@@ -76,6 +77,9 @@ class AddFriends extends React.Component<AddFriendsProps, AddFriendsState> {
 
   onSearch(query: string) {
     const usersMatched = Object.values(this.props.users!).filter(user => {
+      if (user.relationship === UserRelationships.FRIEND || user.relationship === UserRelationships.SELF) {
+        return false;
+      }
       let searchSpace: string = '';
       if (user.firstName) {
         searchSpace += `${user.firstName.toLowerCase()} `;

@@ -5,6 +5,7 @@ import {
   Scorecard,
   DistanceMetric,
   Exercise,
+  UserRelationships,
 } from '../types';
 
 export async function getAllUsers(): Promise<any> {
@@ -30,6 +31,7 @@ export async function getFriendslist(userId: string): Promise<any> {
     lastName: user.last_name,
     email: user.email,
     phoneNumber: user.phone_number,
+    relationship: UserRelationships.FRIEND,
   }));
 }
 
@@ -46,6 +48,7 @@ export async function createFriendship(userId: string, userIdForFriend: string):
     lastName: friend.last_name,
     email: friend.email,
     phoneNumber: friend.phone_number,
+    relationship: UserRelationships.FRIEND,
   };
 }
 
@@ -102,6 +105,7 @@ export async function getActivities(userId: string): Promise<[Activity]> {
     distanceMetric: activity.distanceMetric,
     time: activity.time,
     caloriesBurned: activity.caloriesBurned,
+    startTime: activity.startTime,
     exercise: activity.exercise,
     userId: activity.userId,
     photos: activity.photos,
@@ -147,7 +151,7 @@ export async function createActivity({
     distanceMetric: activity.distance_metric,
     time: activity.time,
     userId: activity.userId,
-    startTime: activity.start_time,
+    startTime: activity.startTime,
     caloriesBurned: activity.calories_burned,
     exercise: activity.exercise,
   };
@@ -179,6 +183,8 @@ export async function getActivitiesOfChallenge(challengeId: string): Promise<[Ac
     caloriesBurned: activity.caloriesBurned,
     exercise: activity.exercise,
     photos: activity.photos,
+    startTime: activity.startTime,
+    userId: activity.userId
   }));
 }
 

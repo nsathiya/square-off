@@ -1,4 +1,6 @@
 import { post, get } from './httpClient';
+import { UserState } from '../reducers/userReducer';
+import { UserRelationships } from '../types';
 
 export async function logIn(username: string, password: string): Promise<{}> {
   const path: string = `/v1/login`;
@@ -6,8 +8,16 @@ export async function logIn(username: string, password: string): Promise<{}> {
     username: username,
     // password
   };
-  const userObj: {} = await post(path, body);
-  return userObj;
+  const userObj: any = await post(path, body);
+  return {
+    id: userObj.id,
+    username: userObj.username,
+    firstName: userObj.first_name,
+    lastName: userObj.last_name,
+    email: userObj.email,
+    phoneNumber: userObj.phone_number,
+    relationship: UserRelationships.SELF,
+  };
 }
 
 export async function logOut(username: string): Promise<{}> {
@@ -27,6 +37,14 @@ export async function signUp(user: any): Promise<any> {
     email: user.email,
     phone_number: user.phoneNumber,
   };
-  const userObj: {} = await post(path, body);
-  return userObj;
+  const userObj: any = await post(path, body);
+  return {
+    id: userObj.id,
+    username: userObj.username,
+    firstName: userObj.first_name,
+    lastName: userObj.last_name,
+    email: userObj.email,
+    phoneNumber: userObj.phone_number,
+    relationship: UserRelationships.SELF,
+  };
 }

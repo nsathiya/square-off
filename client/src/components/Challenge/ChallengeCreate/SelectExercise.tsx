@@ -12,6 +12,7 @@ import { FriendsState } from '../../../infra/reducers/friendsReducer';
 import { ChallengesState } from '../../../infra/reducers/challengesReducer';
 import { Exercise } from '../../../infra/types';
 import { IStoreState } from '../../../infra/store';
+import { extractFriends } from '../../../infra/store/extractors';
 
 import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
@@ -61,8 +62,6 @@ const useStyles = makeStyles((theme) => ({
 
 type StateProps = {
   readonly user?: UserState;
-  readonly friends: FriendsState;
-  readonly challenges: ChallengesState;
 };
 
 type DispatchProps = {};
@@ -127,10 +126,7 @@ const SelectExercise = ({ setExercise, nextAction }: Props) => {
 };
 
 function mapStateToProps (state: IStoreState): StateProps {
-  return {
-    friends: state.friends,
-    challenges: state.challenges,
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch: ThunkDispatch<{}, void, Action>): DispatchProps {

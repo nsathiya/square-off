@@ -16,9 +16,8 @@ import {
   getScorecardsOfChallenge as getScorecardsOfChallengeApi,
   createActivity as createActivityApi,
 } from '../api';
-import IStoreState from '../store/IStoreState';
 import keys from './actionTypesKeys';
-import { Challenge, Scorecard, Activity } from '../types';
+import { Challenge, Scorecard, Activity, UserRelationships } from '../types';
 
 import {
   ISignUpFailAction,
@@ -125,10 +124,10 @@ export function getFriends(userId: string): (dispatch: ThunkDispatch<{}, void, A
     dispatch(InProgress());
 
     try {
-      const friends = await getFriendslistApi(userId);
+      const users = await getFriendslistApi(userId);
       // TODO change type of friend
-      friends.forEach((friend: any) => {
-        dispatch(Success(keys.ADD_FRIEND, { friend }));
+      users.forEach((user: any) => {
+        dispatch(Success(keys.ADD_USER, { user }));
       });
     } catch (err) {
       dispatch(Fail(err));
@@ -141,8 +140,8 @@ export function createFriend(userId: string, userIdForFriend: string): (dispatch
     dispatch(InProgress());
 
     try {
-      const friend = await createFriendshipApi(userId, userIdForFriend);
-      dispatch(Success(keys.ADD_FRIEND, { friend }));
+      const user = await createFriendshipApi(userId, userIdForFriend);
+      dispatch(Success(keys.ADD_USER, { user }));
     } catch (err) {
       dispatch(Fail(err));
     }
@@ -233,8 +232,6 @@ export function getActivitiesOfChallenge(challengeId: string): (dispatch: Dispat
         dispatch(Success(keys.ADD_ACTIVITY, { activity }));
       });
       const activityIds = activities.map(activity => activity.id);
-      console.log('activ8tes', activities);
-      console.log('activityIds', activityIds);
       dispatch(Success(keys.EDIT_CHALLENGE, {
         challengeId,
         key: 'activities',

@@ -11,6 +11,7 @@ import { FriendsState } from '../../infra/reducers/friendsReducer';
 import { ChallengesState } from '../../infra/reducers/challengesReducer';
 import { Challenge, ChallengeStatus } from '../../infra/types';
 import { IStoreState } from '../../infra/store';
+import { extractFriends } from '../../infra/store/extractors';
 
 import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
@@ -84,7 +85,7 @@ function mapStateToProps (state: IStoreState, ownProps: OwnProps): StateProps {
   const challenge = state.challenges[challengeId];
   return {
     user: state.user,
-    friends: state.friends,
+    friends: extractFriends(state),
     challenge
   };
 }

@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import BeachAccessIcon from '@material-ui/icons/BeachAccess';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import Avatar from '@material-ui/core/Avatar';
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   addButton: {
-    margin: 0,
+    margin: 16,
     backgroundColor: '#674EFF',
     color: '#FFFFFF'
   },
@@ -61,10 +61,10 @@ const getActivities = (userActivities: '' | string[] | undefined, activities: Ac
       <ListItem key={activity.id}>
         <ListItemAvatar>
           <Avatar>
-            <BeachAccessIcon />
+            <DirectionsRunIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={activity.name} secondary="July 20, 2014" />
+        <ListItemText primary={activity.name} secondary={activity.startTime} />
       </ListItem>
     );
   });
@@ -82,7 +82,7 @@ const ActivitiesPage = (props: Props) => {
           props.getActivitiesOfUser(userId);
         }
       },
-      []
+      [userId]
     );
 
     const createActivity = () => history.push('/activities-create');
@@ -93,7 +93,7 @@ const ActivitiesPage = (props: Props) => {
         {
           (activities.length > 0) ?
           (
-            <Grid item={true} sm={6}>
+            <Grid item={true} sm={8}>
               <List className={classes.root}>
                 {activities}
               </List>

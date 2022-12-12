@@ -9,7 +9,7 @@
     "@types/validator": "^12.0.1",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
-    "express": "^4.15.4",
+    "express": "^4.17.3",
     "express-joi-validation": "^4.0.3",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
